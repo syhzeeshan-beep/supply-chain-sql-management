@@ -1,1 +1,70 @@
+// Supply Chain Management Database ERD
+// Copy this code to https://dbdiagram.io/ to generate visual diagram
 
+Table suppliers {
+  supplier_id int [pk]
+  supplier_name varchar(100)
+  contact_person varchar(50)
+  phone varchar(20)
+  email varchar(100)
+  address text
+}
+
+Table products {
+  product_id int [pk]
+  product_name varchar(100)
+  description text
+  category varchar(50)
+  unit_price decimal(10,2)
+  supplier_id int [ref: > suppliers.supplier_id]
+}
+
+Table warehouses {
+  warehouse_id int [pk]
+  warehouse_name varchar(100)
+  location varchar(100)
+  capacity_sqft int
+}
+
+Table inventory {
+  inventory_id int [pk]
+  product_id int [ref: > products.product_id]
+  warehouse_id int [ref: > warehouses.warehouse_id]
+  quantity int
+  last_updated timestamp
+}
+
+Table customers {
+  customer_id int [pk]
+  customer_name varchar(100)
+  contact_person varchar(50)
+  phone varchar(20)
+  email varchar(100)
+  address text
+  credit_limit decimal(10,2)
+}
+
+Table orders {
+  order_id int [pk]
+  customer_id int [ref: > customers.customer_id]
+  order_date date
+  required_date date
+  status varchar(20)
+  total_amount decimal(10,2)
+}
+
+Table order_items {
+  order_item_id int [pk]
+  order_id int [ref: > orders.order_id]
+  product_id int [ref: > products.product_id]
+  quantity int
+  unit_price decimal(10,2)
+}
+
+// Relationship descriptions
+Ref: products.supplier_id > suppliers.supplier_id // "Products are supplied by"
+Ref: inventory.product_id > products.product_id // "Inventory tracks"
+Ref: inventory.warehouse_id > warehouses.warehouse_id // "Inventory stored in"
+Ref: orders.customer_id > customers.customer_id // "Orders placed by"
+Ref: order_items.order_id > orders.order_id // "Order items belong to"
+Ref: order_items.product_id > products.product_id // "Order items are"
