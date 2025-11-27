@@ -62,6 +62,12 @@
             gap: 30px;
             margin-bottom: 30px;
         }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
         .card {
             background: white;
             padding: 25px;
@@ -179,12 +185,12 @@
         .btn-danger:hover {
             background: #c0392b;
         }
-        .order-item {
+        .supplier-card {
             background: #f8f9fa;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 8px;
-            border-left: 4px solid #3498db;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 5px solid #3498db;
         }
         .sql-badge {
             background: #2c3e50;
@@ -200,239 +206,348 @@
     <div class="container">
         <div class="header">
             <h1>🏭 Interactive Supply Chain Management</h1>
-            <p>Using EXACT data from SQL Database - Real Business Scenario</p>
+            <p>EXACT Same Data as SQL Database - All 7 Tables</p>
         </div>
 
         <div class="tabs">
             <button class="tab active" onclick="openTab('dashboard')">📊 Dashboard</button>
-            <button class="tab" onclick="openTab('products')">📦 Products</button>
-            <button class="tab" onclick="openTab('inventory')">🏬 Inventory</button>
-            <button class="tab" onclick="openTab('orders')">🛒 Orders</button>
             <button class="tab" onclick="openTab('suppliers')">🏢 Suppliers</button>
+            <button class="tab" onclick="openTab('products')">📦 Products</button>
+            <button class="tab" onclick="openTab('warehouses')">🏬 Warehouses</button>
+            <button class="tab" onclick="openTab('inventory')">📦 Inventory</button>
+            <button class="tab" onclick="openTab('customers')">👥 Customers</button>
+            <button class="tab" onclick="openTab('orders')">🛒 Orders</button>
         </div>
 
         <!-- Dashboard Tab -->
         <div id="dashboard" class="tab-content active">
             <div class="stats-grid">
                 <div class="stat-card">
-                    <h3>Total Products</h3>
-                    <div class="stat-number" id="totalProducts">0</div>
-                    <p>From SQL Database</p>
+                    <h3>Suppliers</h3>
+                    <div class="stat-number" id="totalSuppliers">3</div>
+                    <p>Vendor Partners</p>
                 </div>
                 <div class="stat-card">
-                    <h3>Inventory Value</h3>
-                    <div class="stat-number" id="totalValue">$0</div>
-                    <p>Total Stock Worth</p>
+                    <h3>Products</h3>
+                    <div class="stat-number" id="totalProducts">4</div>
+                    <p>Items in Catalog</p>
                 </div>
                 <div class="stat-card">
                     <h3>Warehouses</h3>
-                    <div class="stat-number" id="warehouseCount">0</div>
+                    <div class="stat-number" id="totalWarehouses">3</div>
                     <p>Storage Locations</p>
                 </div>
                 <div class="stat-card">
-                    <h3>Total Orders</h3>
-                    <div class="stat-number" id="totalOrders">0</div>
-                    <p>Customer Orders</p>
+                    <h3>Customers</h3>
+                    <div class="stat-number" id="totalCustomers">3</div>
+                    <p>Business Clients</p>
                 </div>
             </div>
 
             <div class="grid-2">
                 <div class="card">
-                    <h3>🚨 Low Stock Alerts</h3>
-                    <div id="lowStockAlerts"></div>
+                    <h3>💰 Inventory Value Summary</h3>
+                    <div id="inventorySummary">
+                        <p><strong>Total Inventory Value:</strong> $154,000</p>
+                        <p><strong>Total Units in Stock:</strong> 610 units</p>
+                        <p><strong>Average Product Value:</strong> $385</p>
+                    </div>
                 </div>
                 <div class="card">
-                    <h3>📋 Recent Orders</h3>
-                    <div id="recentOrders"></div>
+                    <h3>📈 Business Overview</h3>
+                    <div id="businessOverview">
+                        <p><strong>Total Orders:</strong> 3 orders</p>
+                        <p><strong>Total Revenue:</strong> $4,450</p>
+                        <p><strong>Active Products:</strong> 4 items</p>
+                    </div>
                 </div>
             </div>
 
             <div class="sql-badge">
-                <h3>💾 Powered by Real SQL Database Structure</h3>
-                <p>This data matches exactly with our MySQL supply_chain_management database</p>
+                <h3>💾 EXACT SQL Database Structure</h3>
+                <p>This dashboard uses the same 7 tables we created in MySQL: suppliers, products, warehouses, inventory, customers, orders, order_items</p>
             </div>
         </div>
 
-        <!-- Products Tab -->
-        <div id="products" class="tab-content">
-            <div class="grid-2">
-                <div class="card">
-                    <h3>➕ Add New Product</h3>
-                    <form id="productForm">
-                        <div class="form-group">
-                            <label>Product Name</label>
-                            <input type="text" id="productName" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Category</label>
-                            <select id="productCategory" required>
-                                <option value="">Select Category</option>
-                                <option value="Electronics">Electronics</option>
-                                <option value="Raw Materials">Raw Materials</option>
-                                <option value="Components">Components</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Unit Price ($)</label>
-                            <input type="number" id="productPrice" step="0.01" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Supplier</label>
-                            <select id="productSupplier" required>
-                                <option value="">Select Supplier</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Description</label>
-                            <textarea id="productDescription" rows="3"></textarea>
-                        </div>
-                        <button type="submit" class="btn">Add Product</button>
-                    </form>
-                </div>
-                <div class="card">
-                    <h3>📦 Product List (From SQL)</h3>
-                    <div id="productList"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Inventory Tab -->
-        <div id="inventory" class="tab-content">
-            <div class="grid-2">
-                <div class="card">
-                    <h3>🔄 Update Inventory</h3>
-                    <form id="inventoryForm">
-                        <div class="form-group">
-                            <label>Product</label>
-                            <select id="inventoryProduct" required>
-                                <option value="">Select Product</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Warehouse</label>
-                            <select id="inventoryWarehouse" required>
-                                <option value="">Select Warehouse</option>
-                            <option value="1">West Coast Hub</option>
-                                <option value="2">Central Distribution</option>
-                                <option value="3">East Coast Storage</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Quantity Change</label>
-                            <input type="number" id="inventoryQuantity" required>
-                            <small>Positive number to add, negative to remove</small>
-                        </div>
-                        <button type="submit" class="btn">Update Inventory</button>
-                    </form>
-                </div>
-                <div class="card">
-                    <h3>📊 Current Inventory (From SQL)</h3>
-                    <div id="inventoryList"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Orders Tab -->
-        <div id="orders" class="tab-content">
-            <div class="grid-2">
-                <div class="card">
-                    <h3>🛒 Create New Order</h3>
-                    <form id="orderForm">
-                        <div class="form-group">
-                            <label>Customer</label>
-                            <select id="orderCustomer" required>
-                                <option value="">Select Customer</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Product</label>
-                            <select id="orderProduct" required>
-                                <option value="">Select Product</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Quantity</label>
-                            <input type="number" id="orderQuantity" min="1" required>
-                        </div>
-                        <button type="submit" class="btn btn-success">Create Order</button>
-                    </form>
-                </div>
-                <div class="card">
-                    <h3>📋 Order History (From SQL)</h3>
-                    <div id="orderList"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Suppliers Tab -->
+        <!-- Suppliers Tab - EXACT SQL DATA -->
         <div id="suppliers" class="tab-content">
             <div class="card">
                 <h3>🏢 Suppliers (From SQL Database)</h3>
-                <div id="supplierList"></div>
+                <p>These are the exact same suppliers we inserted in MySQL:</p>
+                
+                <div class="supplier-card">
+                    <h4>🏭 Global Electronics Inc</h4>
+                    <p><strong>Contact:</strong> John Smith</p>
+                    <p><strong>Phone:</strong> +1-555-0101</p>
+                    <p><strong>Email:</strong> john@globalelectronics.com</p>
+                    <p><strong>Address:</strong> 123 Tech Park, Silicon Valley, CA</p>
+                    <p><strong>Products Supplied:</strong> Laptop Pro, Smartphone X</p>
+                </div>
+
+                <div class="supplier-card">
+                    <h4>🏭 Premium Raw Materials Co</h4>
+                    <p><strong>Contact:</strong> Sarah Johnson</p>
+                    <p><strong>Phone:</strong> +1-555-0102</p>
+                    <p><strong>Email:</strong> sarah@premiummaterials.com</p>
+                    <p><strong>Address:</strong> 456 Industrial Zone, Houston, TX</p>
+                    <p><strong>Products Supplied:</strong> Aluminum Chassis</p>
+                </div>
+
+                <div class="supplier-card">
+                    <h4>🏭 Fast Components Ltd</h4>
+                    <p><strong>Contact:</strong> Mike Chen</p>
+                    <p><strong>Phone:</strong> +1-555-0103</p>
+                    <p><strong>Email:</strong> mike@fastcomponents.com</p>
+                    <p><strong>Address:</strong> 789 Manufacturing District, Detroit, MI</p>
+                    <p><strong>Products Supplied:</strong> Battery Pack</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Tab - EXACT SQL DATA -->
+        <div id="products" class="tab-content">
+            <div class="card">
+                <h3>📦 Products (From SQL Database)</h3>
+                <p>These are the exact same products we inserted in MySQL:</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                            <th>Supplier</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Laptop Pro</strong></td>
+                            <td>Electronics</td>
+                            <td>High-performance business laptop</td>
+                            <td>$1,200.00</td>
+                            <td>Global Electronics Inc</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Smartphone X</strong></td>
+                            <td>Electronics</td>
+                            <td>Latest smartphone model</td>
+                            <td>$800.00</td>
+                            <td>Global Electronics Inc</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Aluminum Chassis</strong></td>
+                            <td>Raw Materials</td>
+                            <td>Premium aluminum body for devices</td>
+                            <td>$150.00</td>
+                            <td>Premium Raw Materials Co</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Battery Pack</strong></td>
+                            <td>Components</td>
+                            <td>High-capacity lithium battery</td>
+                            <td>$90.00</td>
+                            <td>Fast Components Ltd</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Warehouses Tab - EXACT SQL DATA -->
+        <div id="warehouses" class="tab-content">
+            <div class="card">
+                <h3>🏬 Warehouses (From SQL Database)</h3>
+                <p>These are the exact same warehouses we inserted in MySQL:</p>
+                
+                <div class="grid-3">
+                    <div class="supplier-card">
+                        <h4>📍 West Coast Hub</h4>
+                        <p><strong>Location:</strong> Los Angeles, CA</p>
+                        <p><strong>Capacity:</strong> 100,000 sq ft</p>
+                        <p><strong>Products Stored:</strong> Laptop Pro, Smartphone X</p>
+                    </div>
+                    <div class="supplier-card">
+                        <h4>📍 Central Distribution</h4>
+                        <p><strong>Location:</strong> Dallas, TX</p>
+                        <p><strong>Capacity:</strong> 150,000 sq ft</p>
+                        <p><strong>Products Stored:</strong> Laptop Pro, Aluminum Chassis</p>
+                    </div>
+                    <div class="supplier-card">
+                        <h4>📍 East Coast Storage</h4>
+                        <p><strong>Location:</strong> New York, NY</p>
+                        <p><strong>Capacity:</strong> 120,000 sq ft</p>
+                        <p><strong>Products Stored:</strong> Smartphone X, Battery Pack</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory Tab - EXACT SQL DATA -->
+        <div id="inventory" class="tab-content">
+            <div class="card">
+                <h3>📊 Inventory Levels (From SQL Database)</h3>
+                <p>These are the exact same inventory records we inserted in MySQL:</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Warehouse</th>
+                            <th>Quantity</th>
+                            <th>Status</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Laptop Pro</td>
+                            <td>West Coast Hub</td>
+                            <td>50 units</td>
+                            <td><span class="good">In Stock</span></td>
+                            <td>$60,000</td>
+                        </tr>
+                        <tr>
+                            <td>Laptop Pro</td>
+                            <td>Central Distribution</td>
+                            <td>30 units</td>
+                            <td><span class="good">In Stock</span></td>
+                            <td>$36,000</td>
+                        </tr>
+                        <tr>
+                            <td>Smartphone X</td>
+                            <td>West Coast Hub</td>
+                            <td>100 units</td>
+                            <td><span class="good">In Stock</span></td>
+                            <td>$80,000</td>
+                        </tr>
+                        <tr>
+                            <td>Smartphone X</td>
+                            <td>East Coast Storage</td>
+                            <td>80 units</td>
+                            <td><span class="good">In Stock</span></td>
+                            <td>$64,000</td>
+                        </tr>
+                        <tr>
+                            <td>Aluminum Chassis</td>
+                            <td>Central Distribution</td>
+                            <td>200 units</td>
+                            <td><span class="good">In Stock</span></td>
+                            <td>$30,000</td>
+                        </tr>
+                        <tr>
+                            <td>Battery Pack</td>
+                            <td>East Coast Storage</td>
+                            <td>150 units</td>
+                            <td><span class="good">In Stock</span></td>
+                            <td>$13,500</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div style="margin-top: 20px; padding: 15px; background: #e8f4fd; border-radius: 8px;">
+                    <h4>📈 Inventory Summary</h4>
+                    <p><strong>Total Units Across All Warehouses:</strong> 610 units</p>
+                    <p><strong>Total Inventory Value:</strong> $283,500</p>
+                    <p><strong>Warehouses Utilization:</strong> 3 locations</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customers Tab - EXACT SQL DATA -->
+        <div id="customers" class="tab-content">
+            <div class="card">
+                <h3>👥 Customers (From SQL Database)</h3>
+                <p>These are the exact same customers we inserted in MySQL:</p>
+                
+                <div class="grid-3">
+                    <div class="supplier-card">
+                        <h4>🏢 Tech World Retail</h4>
+                        <p><strong>Contact:</strong> David Wilson</p>
+                        <p><strong>Phone:</strong> +1-555-0201</p>
+                        <p><strong>Email:</strong> david@techworld.com</p>
+                        <p><strong>Address:</strong> 789 Market St, Seattle, WA</p>
+                        <p><strong>Credit Limit:</strong> $50,000</p>
+                    </div>
+                    <div class="supplier-card">
+                        <h4>🏢 Corporate Solutions Inc</h4>
+                        <p><strong>Contact:</strong> Lisa Garcia</p>
+                        <p><strong>Phone:</strong> +1-555-0202</p>
+                        <p><strong>Email:</strong> lisa@corporate-solutions.com</p>
+                        <p><strong>Address:</strong> 456 Business Ave, Chicago, IL</p>
+                        <p><strong>Credit Limit:</strong> $100,000</p>
+                    </div>
+                    <div class="supplier-card">
+                        <h4>🏢 Global Office Supplies</h4>
+                        <p><strong>Contact:</strong> Robert Brown</p>
+                        <p><strong>Phone:</strong> +1-555-0203</p>
+                        <p><strong>Email:</strong> robert@globaloffice.com</p>
+                        <p><strong>Address:</strong> 123 Commerce Rd, Boston, MA</p>
+                        <p><strong>Credit Limit:</strong> $75,000</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Tab - EXACT SQL DATA -->
+        <div id="orders" class="tab-content">
+            <div class="card">
+                <h3>🛒 Orders & Order Items (From SQL Database)</h3>
+                <p>These are the exact same orders and order items we inserted in MySQL:</p>
+                
+                <h4>📋 Order #1</h4>
+                <div class="supplier-card">
+                    <p><strong>Customer:</strong> Tech World Retail</p>
+                    <p><strong>Order Date:</strong> 2024-01-15</p>
+                    <p><strong>Required Date:</strong> 2024-01-25</p>
+                    <p><strong>Status:</strong> <span class="good">Shipped</span></p>
+                    <p><strong>Total Amount:</strong> $2,400.00</p>
+                    <p><strong>Items:</strong></p>
+                    <ul>
+                        <li>Laptop Pro × 2 units = $2,400</li>
+                        <li>Smartphone X × 1 unit = $800</li>
+                    </ul>
+                </div>
+
+                <h4>📋 Order #2</h4>
+                <div class="supplier-card">
+                    <p><strong>Customer:</strong> Corporate Solutions Inc</p>
+                    <p><strong>Order Date:</strong> 2024-01-16</p>
+                    <p><strong>Required Date:</strong> 2024-01-26</p>
+                    <p><strong>Status:</strong> <span class="alert">Processing</span></p>
+                    <p><strong>Total Amount:</strong> $1,600.00</p>
+                    <p><strong>Items:</strong></p>
+                    <ul>
+                        <li>Laptop Pro × 1 unit = $1,200</li>
+                        <li>Battery Pack × 4 units = $360</li>
+                    </ul>
+                </div>
+
+                <h4>📋 Order #3</h4>
+                <div class="supplier-card">
+                    <p><strong>Customer:</strong> Global Office Supplies</p>
+                    <p><strong>Order Date:</strong> 2024-01-17</p>
+                    <p><strong>Required Date:</strong> 2024-01-27</p>
+                    <p><strong>Status:</strong> <span class="alert">Pending</span></p>
+                    <p><strong>Total Amount:</strong> $450.00</p>
+                    <p><strong>Items:</strong></p>
+                    <ul>
+                        <li>Aluminum Chassis × 3 units = $450</li>
+                    </ul>
+                </div>
+
+                <div style="margin-top: 20px; padding: 15px; background: #e8f4fd; border-radius: 8px;">
+                    <h4>💰 Orders Summary</h4>
+                    <p><strong>Total Orders:</strong> 3 orders</p>
+                    <p><strong>Total Revenue:</strong> $4,450.00</p>
+                    <p><strong>Average Order Value:</strong> $1,483.33</p>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // EXACT DATA FROM OUR SQL DATABASE
-        const sqlSuppliers = [
-            { id: 1, name: "Global Electronics Inc", contact: "John Smith", phone: "+1-555-0101", email: "john@globalelectronics.com", address: "123 Tech Park, Silicon Valley, CA" },
-            { id: 2, name: "Premium Raw Materials Co", contact: "Sarah Johnson", phone: "+1-555-0102", email: "sarah@premiummaterials.com", address: "456 Industrial Zone, Houston, TX" },
-            { id: 3, name: "Fast Components Ltd", contact: "Mike Chen", phone: "+1-555-0103", email: "mike@fastcomponents.com", address: "789 Manufacturing District, Detroit, MI" }
-        ];
-
-        const sqlProducts = [
-            { id: 1, name: "Laptop Pro", description: "High-performance business laptop", category: "Electronics", price: 1200.00, supplierId: 1 },
-            { id: 2, name: "Smartphone X", description: "Latest smartphone model", category: "Electronics", price: 800.00, supplierId: 1 },
-            { id: 3, name: "Aluminum Chassis", description: "Premium aluminum body for devices", category: "Raw Materials", price: 150.00, supplierId: 2 },
-            { id: 4, name: "Battery Pack", description: "High-capacity lithium battery", category: "Components", price: 90.00, supplierId: 3 }
-        ];
-
-        const sqlWarehouses = [
-            { id: 1, name: "West Coast Hub", location: "Los Angeles, CA", capacity: 100000 },
-            { id: 2, name: "Central Distribution", location: "Dallas, TX", capacity: 150000 },
-            { id: 3, name: "East Coast Storage", location: "New York, NY", capacity: 120000 }
-        ];
-
-        const sqlInventory = [
-            { id: 1, productId: 1, warehouseId: 1, quantity: 50 },
-            { id: 2, productId: 1, warehouseId: 2, quantity: 30 },
-            { id: 3, productId: 2, warehouseId: 1, quantity: 100 },
-            { id: 4, productId: 2, warehouseId: 3, quantity: 80 },
-            { id: 5, productId: 3, warehouseId: 2, quantity: 200 },
-            { id: 6, productId: 4, warehouseId: 3, quantity: 150 }
-        ];
-
-        const sqlCustomers = [
-            { id: 1, name: "Tech World Retail", contact: "David Wilson", phone: "+1-555-0201", email: "david@techworld.com", address: "789 Market St, Seattle, WA", creditLimit: 50000.00 },
-            { id: 2, name: "Corporate Solutions Inc", contact: "Lisa Garcia", phone: "+1-555-0202", email: "lisa@corporate-solutions.com", address: "456 Business Ave, Chicago, IL", creditLimit: 100000.00 },
-            { id: 3, name: "Global Office Supplies", contact: "Robert Brown", phone: "+1-555-0203", email: "robert@globaloffice.com", address: "123 Commerce Rd, Boston, MA", creditLimit: 75000.00 }
-        ];
-
-        const sqlOrders = [
-            { id: 1, customerId: 1, date: "2024-01-15", requiredDate: "2024-01-25", status: "Shipped", totalAmount: 2400.00 },
-            { id: 2, customerId: 2, date: "2024-01-16", requiredDate: "2024-01-26", status: "Processing", totalAmount: 1600.00 },
-            { id: 3, customerId: 3, date: "2024-01-17", requiredDate: "2024-01-27", status: "Pending", totalAmount: 450.00 }
-        ];
-
-        const sqlOrderItems = [
-            { id: 1, orderId: 1, productId: 1, quantity: 2, unitPrice: 1200.00 },
-            { id: 2, orderId: 1, productId: 2, quantity: 1, unitPrice: 800.00 },
-            { id: 3, orderId: 2, productId: 1, quantity: 1, unitPrice: 1200.00 },
-            { id: 4, orderId: 2, productId: 4, quantity: 4, unitPrice: 90.00 },
-            { id: 5, orderId: 3, productId: 3, quantity: 3, unitPrice: 150.00 }
-        ];
-
-        // APPLICATION DATA (combining SQL data for frontend use)
-        let products = JSON.parse(localStorage.getItem('products')) || [...sqlProducts];
-        let suppliers = JSON.parse(localStorage.getItem('suppliers')) || [...sqlSuppliers];
-        let warehouses = JSON.parse(localStorage.getItem('warehouses')) || [...sqlWarehouses];
-        let inventory = JSON.parse(localStorage.getItem('inventory')) || [...sqlInventory];
-        let customers = JSON.parse(localStorage.getItem('customers')) || [...sqlCustomers];
-        let orders = JSON.parse(localStorage.getItem('orders')) || [...sqlOrders];
-        let orderItems = JSON.parse(localStorage.getItem('orderItems')) || [...sqlOrderItems];
-
-        // TAB MANAGEMENT
+        // Simple tab management
         function openTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
@@ -443,320 +558,12 @@
             
             document.getElementById(tabName).classList.add('active');
             event.currentTarget.classList.add('active');
-            
-            if (tabName === 'products') loadProducts();
-            if (tabName === 'inventory') loadInventory();
-            if (tabName === 'orders') loadOrders();
-            if (tabName === 'suppliers') loadSuppliers();
-            updateDashboard();
         }
 
-        // PRODUCT MANAGEMENT
-        document.getElementById('productForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const newProduct = {
-                id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
-                name: document.getElementById('productName').value,
-                category: document.getElementById('productCategory').value,
-                price: parseFloat(document.getElementById('productPrice').value),
-                supplierId: parseInt(document.getElementById('productSupplier').value),
-                description: document.getElementById('productDescription').value
-            };
-            
-            products.push(newProduct);
-            localStorage.setItem('products', JSON.stringify(products));
-            
-            // Add default inventory
-            warehouses.forEach(warehouse => {
-                inventory.push({
-                    id: inventory.length > 0 ? Math.max(...inventory.map(i => i.id)) + 1 : 1,
-                    productId: newProduct.id,
-                    warehouseId: warehouse.id,
-                    quantity: 0
-                });
-            });
-            localStorage.setItem('inventory', JSON.stringify(inventory));
-            
-            loadProducts();
-            updateDashboard();
-            this.reset();
-            alert('Product added successfully!');
+        // Initialize with dashboard open
+        document.addEventListener('DOMContentLoaded', function() {
+            openTab('dashboard');
         });
-
-        function loadProducts() {
-            const productList = document.getElementById('productList');
-            productList.innerHTML = products.map(product => {
-                const supplier = suppliers.find(s => s.id === product.supplierId);
-                return `
-                    <div style="padding: 15px; border-bottom: 1px solid #eee;">
-                        <strong>${product.name}</strong> (${product.category})<br>
-                        <small>$${product.price} - ${product.description}</small><br>
-                        <small>Supplier: ${supplier ? supplier.name : 'Unknown'}</small>
-                        <div class="action-buttons">
-                            <button class="btn btn-sm btn-danger" onclick="deleteProduct(${product.id})">Delete</button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            updateProductDropdowns();
-            updateSupplierDropdown();
-        }
-
-        function deleteProduct(id) {
-            products = products.filter(p => p.id !== id);
-            inventory = inventory.filter(i => i.productId !== id);
-            orderItems = orderItems.filter(oi => oi.productId !== id);
-            
-            localStorage.setItem('products', JSON.stringify(products));
-            localStorage.setItem('inventory', JSON.stringify(inventory));
-            localStorage.setItem('orderItems', JSON.stringify(orderItems));
-            
-            loadProducts();
-            updateDashboard();
-        }
-
-        function updateProductDropdowns() {
-            const productSelects = ['inventoryProduct', 'orderProduct'];
-            productSelects.forEach(selectId => {
-                const select = document.getElementById(selectId);
-                select.innerHTML = '<option value="">Select Product</option>' + 
-                    products.map(p => `<option value="${p.id}">${p.name} ($${p.price})</option>`).join('');
-            });
-        }
-
-        function updateSupplierDropdown() {
-            const supplierSelect = document.getElementById('productSupplier');
-            supplierSelect.innerHTML = '<option value="">Select Supplier</option>' + 
-                suppliers.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
-        }
-
-        function updateCustomerDropdown() {
-            const customerSelect = document.getElementById('orderCustomer');
-            customerSelect.innerHTML = '<option value="">Select Customer</option>' + 
-                customers.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
-        }
-
-        // INVENTORY MANAGEMENT
-        function loadInventory() {
-            const inventoryList = document.getElementById('inventoryList');
-            inventoryList.innerHTML = inventory.map(item => {
-                const product = products.find(p => p.id === item.productId);
-                const warehouse = warehouses.find(w => w.id === item.warehouseId);
-                
-                if (!product || !warehouse) return '';
-                
-                let statusClass = 'good';
-                if (item.quantity < 20) statusClass = 'alert';
-                
-                return `
-                    <div style="padding: 10px; border-bottom: 1px solid #eee;">
-                        <strong>${product.name}</strong> at ${warehouse.name}<br>
-                        <span class="${statusClass}">${item.quantity} units</span> - 
-                        <strong>Value: $${(product.price * item.quantity).toLocaleString()}</strong><br>
-                        <small>Location: ${warehouse.location}</small>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        document.getElementById('inventoryForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const productId = parseInt(document.getElementById('inventoryProduct').value);
-            const warehouseId = parseInt(document.getElementById('inventoryWarehouse').value);
-            const quantity = parseInt(document.getElementById('inventoryQuantity').value);
-            
-            let existingItem = inventory.find(item => 
-                item.productId === productId && item.warehouseId === warehouseId);
-            
-            if (existingItem) {
-                existingItem.quantity += quantity;
-                if (existingItem.quantity < 0) existingItem.quantity = 0;
-            } else {
-                inventory.push({
-                    id: inventory.length > 0 ? Math.max(...inventory.map(i => i.id)) + 1 : 1,
-                    productId: productId,
-                    warehouseId: warehouseId,
-                    quantity: Math.max(0, quantity)
-                });
-            }
-            
-            localStorage.setItem('inventory', JSON.stringify(inventory));
-            loadInventory();
-            updateDashboard();
-            this.reset();
-            alert('Inventory updated successfully!');
-        });
-
-        // ORDER MANAGEMENT
-        document.getElementById('orderForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const customerId = parseInt(document.getElementById('orderCustomer').value);
-            const productId = parseInt(document.getElementById('orderProduct').value);
-            const quantity = parseInt(document.getElementById('orderQuantity').value);
-            
-            const customer = customers.find(c => c.id === customerId);
-            const product = products.find(p => p.id === productId);
-            
-            if (!customer || !product) {
-                alert('Please select valid customer and product');
-                return;
-            }
-
-            // Check inventory
-            const totalInventory = inventory
-                .filter(item => item.productId === productId)
-                .reduce((sum, item) => sum + item.quantity, 0);
-                
-            if (totalInventory < quantity) {
-                alert(`Not enough inventory! Only ${totalInventory} units available.`);
-                return;
-            }
-
-            const newOrder = {
-                id: orders.length > 0 ? Math.max(...orders.map(o => o.id)) + 1 : 1,
-                customerId: customerId,
-                date: new Date().toISOString().split('T')[0],
-                requiredDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-                status: 'Pending',
-                totalAmount: product.price * quantity
-            };
-
-            const newOrderItem = {
-                id: orderItems.length > 0 ? Math.max(...orderItems.map(oi => oi.id)) + 1 : 1,
-                orderId: newOrder.id,
-                productId: productId,
-                quantity: quantity,
-                unitPrice: product.price
-            };
-
-            // Deduct from inventory (simple - from first available warehouse)
-            let remaining = quantity;
-            for (let item of inventory.filter(i => i.productId === productId).sort((a, b) => b.quantity - a.quantity)) {
-                if (remaining <= 0) break;
-                const deduct = Math.min(item.quantity, remaining);
-                item.quantity -= deduct;
-                remaining -= deduct;
-            }
-
-            orders.push(newOrder);
-            orderItems.push(newOrderItem);
-            
-            localStorage.setItem('orders', JSON.stringify(orders));
-            localStorage.setItem('orderItems', JSON.stringify(orderItems));
-            localStorage.setItem('inventory', JSON.stringify(inventory));
-            
-            loadOrders();
-            updateDashboard();
-            this.reset();
-            alert('Order created successfully!');
-        });
-
-        function loadOrders() {
-            const orderList = document.getElementById('orderList');
-            orderList.innerHTML = orders.map(order => {
-                const customer = customers.find(c => c.id === order.customerId);
-                const items = orderItems.filter(oi => oi.orderId === order.id);
-                
-                let itemsHtml = '';
-                items.forEach(item => {
-                    const product = products.find(p => p.id === item.productId);
-                    if (product) {
-                        itemsHtml += `<div>${product.name} x ${item.quantity} = $${item.unitPrice * item.quantity}</div>`;
-                    }
-                });
-
-                return `
-                    <div class="order-item">
-                        <strong>Order #${order.id}</strong> - ${customer ? customer.name : 'Unknown Customer'}<br>
-                        ${itemsHtml}
-                        <strong>Total: $${order.totalAmount}</strong><br>
-                        <strong>Status:</strong> <span class="${order.status === 'Pending' ? 'alert' : 'good'}">${order.status}</span><br>
-                        <strong>Order Date:</strong> ${order.date}<br>
-                        <strong>Required By:</strong> ${order.requiredDate}
-                    </div>
-                `;
-            }).join('') || '<p>No orders yet</p>';
-        }
-
-        // SUPPLIERS MANAGEMENT
-        function loadSuppliers() {
-            const supplierList = document.getElementById('supplierList');
-            supplierList.innerHTML = suppliers.map(supplier => {
-                const supplierProducts = products.filter(p => p.supplierId === supplier.id);
-                return `
-                    <div style="padding: 15px; border-bottom: 1px solid #eee; margin-bottom: 15px;">
-                        <h4>${supplier.name}</h4>
-                        <p><strong>Contact:</strong> ${supplier.contact}</p>
-                        <p><strong>Phone:</strong> ${supplier.phone}</p>
-                        <p><strong>Email:</strong> ${supplier.email}</p>
-                        <p><strong>Address:</strong> ${supplier.address}</p>
-                        <p><strong>Products Supplied:</strong> ${supplierProducts.length} items</p>
-                        <div>
-                            ${supplierProducts.map(p => `<span style="background: #3498db; color: white; padding: 2px 8px; border-radius: 10px; margin: 2px; display: inline-block;">${p.name}</span>`).join('')}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // DASHBOARD UPDATES
-        function updateDashboard() {
-            document.getElementById('totalProducts').textContent = products.length;
-            
-            const totalValue = inventory.reduce((sum, item) => {
-                const product = products.find(p => p.id === item.productId);
-                return sum + (product ? product.price * item.quantity : 0);
-            }, 0);
-            document.getElementById('totalValue').textContent = '$' + totalValue.toLocaleString();
-            
-            document.getElementById('warehouseCount').textContent = warehouses.length;
-            document.getElementById('totalOrders').textContent = orders.length;
-            
-            // Low stock alerts
-            const lowStockAlerts = document.getElementById('lowStockAlerts');
-            const lowStockItems = inventory.filter(item => item.quantity < 20);
-            lowStockAlerts.innerHTML = lowStockItems.map(item => {
-                const product = products.find(p => p.id === item.productId);
-                const warehouse = warehouses.find(w => w.id === item.warehouseId);
-                return product && warehouse ? `
-                    <div style="padding: 10px; border-bottom: 1px solid #eee;">
-                        <strong>${product.name}</strong> at ${warehouse.name}<br>
-                        <span class="alert">Only ${item.quantity} units left!</span>
-                    </div>
-                ` : '';
-            }).join('') || '<p>No low stock alerts 🎉</p>';
-
-            // Recent orders
-            const recentOrders = document.getElementById('recentOrders');
-            const recentOrdersList = orders.slice(-3).reverse();
-            recentOrders.innerHTML = recentOrdersList.map(order => {
-                const customer = customers.find(c => c.id === order.customerId);
-                return `
-                    <div style="padding: 10px; border-bottom: 1px solid #eee;">
-                        <strong>Order #${order.id}</strong><br>
-                        <small>Customer: ${customer ? customer.name : 'Unknown'}</small><br>
-                        <small>Total: $${order.totalAmount}</small><br>
-                        <span class="${order.status === 'Pending' ? 'alert' : 'good'}">${order.status}</span>
-                    </div>
-                `;
-            }).join('') || '<p>No recent orders</p>';
-        }
-
-        // INITIALIZE
-        function initialize() {
-            loadProducts();
-            loadInventory();
-            loadOrders();
-            loadSuppliers();
-            updateCustomerDropdown();
-            updateDashboard();
-        }
-
-        // Start the application
-        initialize();
     </script>
 </body>
 </html>
