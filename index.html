@@ -62,6 +62,12 @@
             gap: 30px;
             margin-bottom: 30px;
         }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
         .card {
             background: white;
             padding: 25px;
@@ -108,6 +114,12 @@
         .btn-success:hover {
             background: #219a52;
         }
+        .btn-warning {
+            background: #f39c12;
+        }
+        .btn-warning:hover {
+            background: #e67e22;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -139,6 +151,14 @@
         }
         .good {
             background: #27ae60;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: inline-block;
+        }
+        .warning {
+            background: #f39c12;
             color: white;
             padding: 8px 15px;
             border-radius: 20px;
@@ -179,6 +199,22 @@
         .btn-danger:hover {
             background: #c0392b;
         }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 20px 0;
+        }
+        .order-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        .status-pending { border-left-color: #f39c12; }
+        .status-processing { border-left-color: #3498db; }
+        .status-shipped { border-left-color: #27ae60; }
+        .status-delivered { border-left-color: #2ecc71; }
     </style>
 </head>
 <body>
@@ -227,8 +263,8 @@
                     <div id="lowStockAlerts"></div>
                 </div>
                 <div class="card">
-                    <h3>📈 Recent Activity</h3>
-                    <div id="recentActivity"></div>
+                    <h3>📋 Recent Orders</h3>
+                    <div id="recentOrders"></div>
                 </div>
             </div>
 
@@ -316,24 +352,100 @@
             </div>
         </div>
 
-        <!-- Additional tabs for Orders and Analytics would go here -->
-        <!-- I'll provide the JavaScript to make it work -->
+        <!-- Orders Tab -->
+        <div id="orders" class="tab-content">
+            <div class="grid-2">
+                <div class="card">
+                    <h3>🛒 Create New Order</h3>
+                    <form id="orderForm">
+                        <div class="form-group">
+                            <label>Customer Name</label>
+                            <input type="text" id="customerName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Product</label>
+                            <select id="orderProduct" required>
+                                <option value="">Select Product</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Quantity</label>
+                            <input type="number" id="orderQuantity" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="orderStatus" required>
+                                <option value="pending">Pending</option>
+                                <option value="processing">Processing</option>
+                                <option value="shipped">Shipped</option>
+                                <option value="delivered">Delivered</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn">Create Order</button>
+                    </form>
+                </div>
+                <div class="card">
+                    <h3>📋 Order History</h3>
+                    <div id="orderList"></div>
+                </div>
+            </div>
+        </div>
 
+        <!-- Analytics Tab -->
+        <div id="analytics" class="tab-content">
+            <div class="grid-3">
+                <div class="card">
+                    <h3>📦 Products by Category</h3>
+                    <div class="chart-container">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>💰 Inventory Value</h3>
+                    <div class="chart-container">
+                        <canvas id="valueChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>📊 Stock Distribution</h3>
+                    <div class="chart-container">
+                        <canvas id="stockChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>📈 Business Insights</h3>
+                <div id="businessInsights"></div>
+            </div>
+        </div>
     </div>
 
     <script>
         // Sample initial data
         let products = JSON.parse(localStorage.getItem('products')) || [
             { id: 1, name: "Laptop Pro", category: "Electronics", price: 1200, description: "High-performance business laptop" },
-            { id: 2, name: "Smartphone X", category: "Electronics", price: 800, description: "Latest smartphone model" }
+            { id: 2, name: "Smartphone X", category: "Electronics", price: 800, description: "Latest smartphone model" },
+            { id: 3, name: "Aluminum Chassis", category: "Raw Materials", price: 150, description: "Premium aluminum body" },
+            { id: 4, name: "Battery Pack", category: "Components", price: 90, description: "High-capacity lithium battery" }
         ];
 
         let inventory = JSON.parse(localStorage.getItem('inventory')) || [
             { productId: 1, warehouse: "West Coast Hub", quantity: 50 },
-            { productId: 2, warehouse: "West Coast Hub", quantity: 100 }
+            { productId: 1, warehouse: "Central Distribution", quantity: 30 },
+            { productId: 2, warehouse: "West Coast Hub", quantity: 100 },
+            { productId: 2, warehouse: "East Coast Storage", quantity: 80 },
+            { productId: 3, warehouse: "Central Distribution", quantity: 200 },
+            { productId: 4, warehouse: "East Coast Storage", quantity: 150 }
         ];
 
-        let orders = JSON.parse(localStorage.getItem('orders')) || [];
+        let orders = JSON.parse(localStorage.getItem('orders')) || [
+            { id: 1, customerName: "Tech World Retail", productId: 1, quantity: 2, status: "shipped", date: "2024-01-15", total: 2400 },
+            { id: 2, customerName: "Corporate Solutions", productId: 1, quantity: 1, status: "processing", date: "2024-01-16", total: 1200 },
+            { id: 3, customerName: "Global Office", productId: 3, quantity: 3, status: "pending", date: "2024-01-17", total: 450 }
+        ];
+
+        // Chart instances
+        let categoryChart, valueChart, stockChart;
 
         // Tab management
         function openTab(tabName) {
@@ -349,6 +461,8 @@
             // Refresh data when tab opens
             if (tabName === 'products') loadProducts();
             if (tabName === 'inventory') loadInventory();
+            if (tabName === 'orders') loadOrders();
+            if (tabName === 'analytics') loadAnalytics();
             updateDashboard();
         }
 
@@ -356,7 +470,7 @@
         document.getElementById('productForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const newProduct = {
-                id: products.length + 1,
+                id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
                 name: document.getElementById('productName').value,
                 category: document.getElementById('productCategory').value,
                 price: parseFloat(document.getElementById('productPrice').value),
@@ -381,6 +495,9 @@
                     </div>
                 </div>
             `).join('');
+
+            // Update product dropdowns
+            updateProductDropdowns();
         }
 
         function deleteProduct(id) {
@@ -390,21 +507,30 @@
             updateDashboard();
         }
 
+        function updateProductDropdowns() {
+            const productSelects = ['inventoryProduct', 'orderProduct'];
+            productSelects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                select.innerHTML = '<option value="">Select Product</option>' + 
+                    products.map(p => `<option value="${p.id}">${p.name} ($${p.price})</option>`).join('');
+            });
+        }
+
         // Inventory Management
         function loadInventory() {
-            // Update product dropdown
-            const productSelect = document.getElementById('inventoryProduct');
-            productSelect.innerHTML = '<option value="">Select Product</option>' + 
-                products.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
-            
             // Display current inventory
             const inventoryList = document.getElementById('inventoryList');
             inventoryList.innerHTML = inventory.map(item => {
                 const product = products.find(p => p.id === item.productId);
+                let statusClass = 'good';
+                if (item.quantity < 20) statusClass = 'alert';
+                else if (item.quantity < 50) statusClass = 'warning';
+                
                 return product ? `
                     <div style="padding: 10px; border-bottom: 1px solid #eee;">
                         <strong>${product.name}</strong> at ${item.warehouse}<br>
-                        <span class="${item.quantity < 20 ? 'alert' : 'good'}">${item.quantity} units</span>
+                        <span class="${statusClass}">${item.quantity} units</span> - 
+                        <strong>$${(product.price * item.quantity).toLocaleString()}</strong>
                     </div>
                 ` : '';
             }).join('');
@@ -421,8 +547,9 @@
             
             if (existingItem) {
                 existingItem.quantity += quantity;
+                if (existingItem.quantity < 0) existingItem.quantity = 0;
             } else {
-                inventory.push({ productId, warehouse, quantity });
+                inventory.push({ productId, warehouse, quantity: Math.max(0, quantity) });
             }
             
             localStorage.setItem('inventory', JSON.stringify(inventory));
@@ -431,6 +558,192 @@
             this.reset();
             alert('Inventory updated successfully!');
         });
+
+        // Orders Management
+        function loadOrders() {
+            const orderList = document.getElementById('orderList');
+            orderList.innerHTML = orders.map(order => {
+                const product = products.find(p => p.id === order.productId);
+                const statusClass = `status-${order.status}`;
+                return product ? `
+                    <div class="order-item ${statusClass}">
+                        <strong>Order #${order.id}</strong> - ${order.customerName}<br>
+                        <strong>${product.name}</strong> x ${order.quantity}<br>
+                        <span class="good">Total: $${order.total}</span><br>
+                        <small>Status: <span class="${order.status === 'pending' ? 'warning' : order.status === 'shipped' ? 'good' : 'good'}">${order.status.toUpperCase()}</span></small><br>
+                        <small>Date: ${order.date}</small>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-warning" onclick="updateOrderStatus(${order.id}, 'processing')">Process</button>
+                            <button class="btn btn-sm btn-success" onclick="updateOrderStatus(${order.id}, 'shipped')">Ship</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteOrder(${order.id})">Cancel</button>
+                        </div>
+                    </div>
+                ` : '';
+            }).join('');
+        }
+
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const productId = parseInt(document.getElementById('orderProduct').value);
+            const product = products.find(p => p.id === productId);
+            
+            const newOrder = {
+                id: orders.length > 0 ? Math.max(...orders.map(o => o.id)) + 1 : 1,
+                customerName: document.getElementById('customerName').value,
+                productId: productId,
+                quantity: parseInt(document.getElementById('orderQuantity').value),
+                status: document.getElementById('orderStatus').value,
+                date: new Date().toISOString().split('T')[0],
+                total: product ? product.price * parseInt(document.getElementById('orderQuantity').value) : 0
+            };
+            
+            orders.push(newOrder);
+            localStorage.setItem('orders', JSON.stringify(orders));
+            loadOrders();
+            updateDashboard();
+            this.reset();
+            alert('Order created successfully!');
+        });
+
+        function updateOrderStatus(orderId, newStatus) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                order.status = newStatus;
+                localStorage.setItem('orders', JSON.stringify(orders));
+                loadOrders();
+                updateDashboard();
+            }
+        }
+
+        function deleteOrder(orderId) {
+            orders = orders.filter(o => o.id !== orderId);
+            localStorage.setItem('orders', JSON.stringify(orders));
+            loadOrders();
+            updateDashboard();
+        }
+
+        // Analytics
+        function loadAnalytics() {
+            updateCharts();
+            updateBusinessInsights();
+        }
+
+        function updateCharts() {
+            // Category Distribution Chart
+            const categoryCounts = {};
+            products.forEach(product => {
+                categoryCounts[product.category] = (categoryCounts[product.category] || 0) + 1;
+            });
+
+            if (categoryChart) categoryChart.destroy();
+            const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+            categoryChart = new Chart(categoryCtx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(categoryCounts),
+                    datasets: [{
+                        data: Object.values(categoryCounts),
+                        backgroundColor: ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // Inventory Value Chart
+            const warehouseValues = {};
+            inventory.forEach(item => {
+                const product = products.find(p => p.id === item.productId);
+                if (product) {
+                    warehouseValues[item.warehouse] = (warehouseValues[item.warehouse] || 0) + (product.price * item.quantity);
+                }
+            });
+
+            if (valueChart) valueChart.destroy();
+            const valueCtx = document.getElementById('valueChart').getContext('2d');
+            valueChart = new Chart(valueCtx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(warehouseValues),
+                    datasets: [{
+                        label: 'Inventory Value ($)',
+                        data: Object.values(warehouseValues),
+                        backgroundColor: '#3498db'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // Stock Distribution Chart
+            const productStocks = {};
+            products.forEach(product => {
+                const totalStock = inventory
+                    .filter(item => item.productId === product.id)
+                    .reduce((sum, item) => sum + item.quantity, 0);
+                productStocks[product.name] = totalStock;
+            });
+
+            if (stockChart) stockChart.destroy();
+            const stockCtx = document.getElementById('stockChart').getContext('2d');
+            stockChart = new Chart(stockCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(productStocks),
+                    datasets: [{
+                        data: Object.values(productStocks),
+                        backgroundColor: ['#3498db', '#e74c3c', '#2ecc71', '#f39c12']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        function updateBusinessInsights() {
+            const insights = document.getElementById('businessInsights');
+            const totalInventoryValue = inventory.reduce((sum, item) => {
+                const product = products.find(p => p.id === item.productId);
+                return sum + (product ? product.price * item.quantity : 0);
+            }, 0);
+
+            const lowStockItems = inventory.filter(item => item.quantity < 20).length;
+            const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
+
+            insights.innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Business Value</h3>
+                        <div class="stat-number">$${totalInventoryValue.toLocaleString()}</div>
+                        <p>Inventory + Revenue</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Order Success Rate</h3>
+                        <div class="stat-number">${orders.length > 0 ? Math.round((orders.filter(o => o.status === 'shipped' || o.status === 'delivered').length / orders.length) * 100) : 0}%</div>
+                        <p>Orders Delivered</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Inventory Health</h3>
+                        <div class="stat-number">${lowStockItems === 0 ? 'Excellent' : 'Needs Attention'}</div>
+                        <p>${lowStockItems} items low</p>
+                    </div>
+                </div>
+                <div style="margin-top: 20px;">
+                    <h4>📋 Key Recommendations:</h4>
+                    <ul>
+                        <li>${lowStockItems > 0 ? `Reorder ${lowStockItems} low-stock items immediately` : 'Inventory levels are healthy'}</li>
+                        <li>${totalRevenue > 5000 ? 'Consider expanding product line' : 'Focus on marketing to increase orders'}</li>
+                        <li>Monitor warehouse capacity for optimal distribution</li>
+                    </ul>
+                </div>
+            `;
+        }
 
         // Dashboard Updates
         function updateDashboard() {
@@ -459,16 +772,47 @@
                     </div>
                 ` : '';
             }).join('') || '<p>No low stock alerts 🎉</p>';
+
+            // Recent orders
+            const recentOrders = document.getElementById('recentOrders');
+            const recentOrdersList = orders.slice(-3).reverse();
+            recentOrders.innerHTML = recentOrdersList.map(order => {
+                const product = products.find(p => p.id === order.productId);
+                return product ? `
+                    <div style="padding: 10px; border-bottom: 1px solid #eee;">
+                        <strong>${order.customerName}</strong><br>
+                        <small>${product.name} x ${order.quantity}</small><br>
+                        <span class="${order.status === 'pending' ? 'warning' : 'good'}">${order.status}</span>
+                    </div>
+                ` : '';
+            }).join('') || '<p>No recent orders</p>';
         }
 
         function generateReport() {
-            alert('Report generated! This would download a PDF in a real system.');
+            const reportData = {
+                products: products,
+                inventory: inventory,
+                orders: orders,
+                generated: new Date().toISOString()
+            };
+            
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(reportData, null, 2));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "supply_chain_report.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+            
+            alert('Report downloaded as JSON file!');
         }
 
         // Initialize
         loadProducts();
         loadInventory();
+        loadOrders();
         updateDashboard();
+        updateProductDropdowns();
     </script>
 </body>
 </html>
