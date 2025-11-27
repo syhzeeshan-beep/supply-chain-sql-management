@@ -1,100 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supply Chain Management System | Syed Zeeshan Arshad</title>
+    <title>Supply Chain Management | Syed Zeeshan Arshad</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --accent: #e74c3c;
-            --success: #27ae60;
-            --warning: #f39c12;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --gray: #95a5a6;
-        }
-
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Arial', sans-serif; 
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             color: #333;
-            line-height: 1.6;
         }
-
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
-
-        /* Header Styles */
         .header {
             background: white;
             padding: 30px;
-            border-radius: 20px;
-            margin-bottom: 25px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             text-align: center;
-            position: relative;
-            overflow: hidden;
+            border-left: 5px solid #3498db;
         }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, var(--secondary), var(--success), var(--warning), var(--accent));
-        }
-
         .header h1 {
-            color: var(--primary);
-            font-size: 2.8em;
+            color: #2c3e50;
             margin-bottom: 10px;
-            font-weight: 700;
+            font-size: 2.5em;
         }
-
-        .header p {
-            color: var(--gray);
-            font-size: 1.2em;
-            margin-bottom: 15px;
-        }
-
-        .creator-badge {
-            display: inline-block;
-            background: var(--primary);
+        .creator {
+            background: #3498db;
             color: white;
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-size: 0.9em;
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-block;
             margin-top: 10px;
+            font-weight: bold;
         }
-
-        /* Tabs Navigation */
         .tabs {
             display: flex;
             background: white;
             border-radius: 15px 15px 0 0;
             overflow: hidden;
             margin-bottom: 0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
         }
-
         .tab {
-            padding: 18px 25px;
+            padding: 15px 25px;
             cursor: pointer;
             background: #f8f9fa;
             border: none;
@@ -102,337 +55,163 @@
             font-size: 16px;
             transition: all 0.3s ease;
             font-weight: 600;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
         }
-
         .tab:hover {
-            background: var(--light);
+            background: #e9ecef;
         }
-
         .tab.active {
-            background: var(--secondary);
+            background: #3498db;
             color: white;
-            box-shadow: inset 0 -3px 0 var(--primary);
         }
-
-        /* Tab Content */
         .tab-content {
             display: none;
             background: white;
-            padding: 35px;
-            border-radius: 0 0 20px 20px;
+            padding: 30px;
+            border-radius: 0 0 15px 15px;
             min-height: 600px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
         }
-
         .tab-content.active {
             display: block;
-            animation: fadeIn 0.5s ease;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Grid Layouts */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
             margin-bottom: 30px;
         }
-
         .grid-3 {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-
-        .grid-4 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
-
-        /* Card Styles */
         .card {
             background: white;
             padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            border: 1px solid #f0f0f0;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 1px solid #e9ecef;
         }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-        }
-
-        .card h3 {
-            color: var(--primary);
-            margin-bottom: 20px;
-            font-size: 1.4em;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-bottom: 2px solid var(--light);
-            padding-bottom: 10px;
-        }
-
-        /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
-
         .stat-card {
-            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            background: linear-gradient(135deg, #3498db, #2980b9);
             color: white;
             padding: 25px;
-            border-radius: 15px;
+            border-radius: 12px;
             text-align: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            transition: transform 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-card h3 {
-            color: white;
-            font-size: 1em;
-            margin-bottom: 10px;
-            border: none;
-            padding: 0;
-            justify-content: center;
-        }
-
         .stat-number {
-            font-size: 2.8em;
+            font-size: 2.5em;
             font-weight: bold;
-            margin: 15px 0;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            margin: 10px 0;
         }
-
-        /* Charts */
         .chart-container {
-            position: relative;
             height: 300px;
             margin: 20px 0;
         }
-
-        /* Tables */
         table {
             width: 100%;
             border-collapse: collapse;
             background: white;
-            border-radius: 12px;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-
         th {
-            background: var(--primary);
+            background: #3498db;
             color: white;
-            padding: 18px 15px;
-            text-align: left;
-            font-weight: 600;
-        }
-
-        td {
             padding: 15px;
-            border-bottom: 1px solid #f0f0f0;
+            text-align: left;
         }
-
-        tr:hover {
-            background: #f8f9fa;
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ecf0f1;
         }
-
-        /* Status Badges */
         .badge {
-            padding: 6px 15px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 600;
-            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
         }
-
-        .badge-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .badge-warning {
-            background: var(--warning);
-            color: white;
-        }
-
-        .badge-danger {
-            background: var(--accent);
-            color: white;
-        }
-
-        .badge-info {
-            background: var(--secondary);
-            color: white;
-        }
-
-        /* Supplier Cards */
-        .supplier-card, .customer-card {
+        .badge-success { background: #27ae60; color: white; }
+        .badge-warning { background: #f39c12; color: white; }
+        .badge-danger { background: #e74c3c; color: white; }
+        .supplier-card {
             background: #f8f9fa;
             padding: 20px;
             margin: 15px 0;
-            border-radius: 12px;
-            border-left: 5px solid var(--secondary);
-            transition: all 0.3s ease;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
         }
-
-        .supplier-card:hover, .customer-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        /* Analytics Highlights */
         .analytics-highlight {
             background: linear-gradient(135deg, #ffeaa7, #fab1a0);
             padding: 25px;
-            border-radius: 15px;
+            border-radius: 12px;
             margin: 20px 0;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
-
         .insight-card {
             background: white;
             padding: 20px;
-            border-radius: 12px;
+            border-radius: 10px;
             margin: 15px 0;
-            border-left: 4px solid var(--success);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 4px solid #27ae60;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
         }
-
-        /* SQL Badge */
-        .sql-badge {
-            background: var(--primary);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 30px;
-            text-align: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-        }
-
-        /* Buttons */
-        .btn {
-            background: var(--secondary);
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn:hover {
-            background: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        /* Footer */
         .footer {
             text-align: center;
-            margin-top: 40px;
-            padding: 20px;
+            margin-top: 30px;
             color: white;
-            font-size: 0.9em;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .grid-2, .grid-3, .grid-4 {
-                grid-template-columns: 1fr;
-            }
-            
-            .tabs {
-                flex-direction: column;
-            }
-            
-            .header h1 {
-                font-size: 2em;
-            }
+            padding: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
+        <!-- Header with Creator Name -->
         <div class="header">
-            <h1><i class="fas fa-warehouse"></i> Supply Chain Management System</h1>
-            <p>Enterprise-grade inventory tracking and business intelligence platform</p>
-            <div class="creator-badge">
-                <i class="fas fa-code"></i> Created by Syed Zeeshan Arshad
+            <h1>🏭 Supply Chain Management System</h1>
+            <p>Professional Inventory Tracking & Business Analytics Platform</p>
+            <div class="creator">
+                🔥 Created by: Syed Zeeshan Arshad
             </div>
         </div>
 
-        <!-- Tabs Navigation -->
+        <!-- Tabs Navigation - INCLUDING ANALYTICS -->
         <div class="tabs">
-            <button class="tab active" onclick="openTab('dashboard')">
-                <i class="fas fa-tachometer-alt"></i> Dashboard
-            </button>
-            <button class="tab" onclick="openTab('analytics')">
-                <i class="fas fa-chart-line"></i> Analytics
-            </button>
-            <button class="tab" onclick="openTab('suppliers')">
-                <i class="fas fa-truck-loading"></i> Suppliers
-            </button>
-            <button class="tab" onclick="openTab('products')">
-                <i class="fas fa-boxes"></i> Products
-            </button>
-            <button class="tab" onclick="openTab('inventory')">
-                <i class="fas fa-warehouse"></i> Inventory
-            </button>
-            <button class="tab" onclick="openTab('orders')">
-                <i class="fas fa-shopping-cart"></i> Orders
-            </button>
+            <button class="tab active" onclick="openTab('dashboard')">📊 Dashboard</button>
+            <button class="tab" onclick="openTab('analytics')">📈 Analytics</button>
+            <button class="tab" onclick="openTab('suppliers')">🏢 Suppliers</button>
+            <button class="tab" onclick="openTab('products')">📦 Products</button>
+            <button class="tab" onclick="openTab('inventory')">🏬 Inventory</button>
+            <button class="tab" onclick="openTab('orders')">🛒 Orders</button>
         </div>
 
         <!-- Dashboard Tab -->
         <div id="dashboard" class="tab-content active">
             <div class="stats-grid">
                 <div class="stat-card">
-                    <h3><i class="fas fa-truck-loading"></i> Suppliers</h3>
+                    <h3>Suppliers</h3>
                     <div class="stat-number">3</div>
                     <p>Vendor Partners</p>
                 </div>
                 <div class="stat-card">
-                    <h3><i class="fas fa-boxes"></i> Products</h3>
+                    <h3>Products</h3>
                     <div class="stat-number">4</div>
                     <p>Items in Catalog</p>
                 </div>
                 <div class="stat-card">
-                    <h3><i class="fas fa-warehouse"></i> Warehouses</h3>
+                    <h3>Warehouses</h3>
                     <div class="stat-number">3</div>
                     <p>Storage Locations</p>
                 </div>
                 <div class="stat-card">
-                    <h3><i class="fas fa-shopping-cart"></i> Orders</h3>
+                    <h3>Orders</h3>
                     <div class="stat-number">3</div>
                     <p>Total Processed</p>
                 </div>
@@ -440,59 +219,50 @@
 
             <div class="grid-2">
                 <div class="card">
-                    <h3><i class="fas fa-exclamation-triangle"></i> Inventory Alerts</h3>
-                    <div class="alert-list">
-                        <div class="supplier-card">
-                            <h4>Laptop Pro - West Coast Hub</h4>
-                            <p>Current stock: <span class="badge badge-warning">50 units</span></p>
-                            <p>Status: <span class="badge badge-warning">Monitor Closely</span></p>
-                        </div>
-                        <div class="supplier-card">
-                            <h4>Smartphone X - Central Distribution</h4>
-                            <p>Current stock: <span class="badge badge-success">100 units</span></p>
-                            <p>Status: <span class="badge badge-success">Healthy</span></p>
-                        </div>
+                    <h3>🚨 Inventory Alerts</h3>
+                    <div class="supplier-card">
+                        <h4>Laptop Pro - West Coast Hub</h4>
+                        <p>Stock: 50 units <span class="badge badge-warning">Low</span></p>
+                    </div>
+                    <div class="supplier-card">
+                        <h4>Smartphone X - Central Distribution</h4>
+                        <p>Stock: 30 units <span class="badge badge-warning">Monitor</span></p>
                     </div>
                 </div>
                 
                 <div class="card">
-                    <h3><i class="fas fa-chart-pie"></i> Quick Analytics</h3>
+                    <h3>📊 Quick Overview</h3>
                     <div class="chart-container">
                         <canvas id="dashboardChart"></canvas>
                     </div>
                 </div>
             </div>
-
-            <div class="sql-badge">
-                <h3><i class="fas fa-database"></i> Real SQL Database Integration</h3>
-                <p>This system mirrors the exact 7-table MySQL database structure with live data synchronization</p>
-            </div>
         </div>
 
-        <!-- Analytics Tab -->
+        <!-- ANALYTICS TAB - NOW VISIBLE -->
         <div id="analytics" class="tab-content">
             <div class="analytics-highlight">
-                <h2><i class="fas fa-chart-bar"></i> Business Intelligence Dashboard</h2>
-                <p>Advanced analytics powered by real supply chain data</p>
+                <h2>📈 Advanced Business Analytics</h2>
+                <p>Data-driven insights for strategic decision making</p>
             </div>
 
             <div class="grid-3">
                 <div class="card">
-                    <h3><i class="fas fa-chart-pie"></i> Product Categories</h3>
+                    <h3>📦 Product Distribution</h3>
                     <div class="chart-container">
                         <canvas id="categoryChart"></canvas>
                     </div>
                 </div>
                 
                 <div class="card">
-                    <h3><i class="fas fa-money-bill-wave"></i> Inventory Value</h3>
+                    <h3>💰 Inventory Value</h3>
                     <div class="chart-container">
                         <canvas id="valueChart"></canvas>
                     </div>
                 </div>
                 
                 <div class="card">
-                    <h3><i class="fas fa-boxes"></i> Stock Distribution</h3>
+                    <h3>📊 Stock Levels</h3>
                     <div class="chart-container">
                         <canvas id="stockChart"></canvas>
                     </div>
@@ -501,14 +271,14 @@
 
             <div class="grid-2">
                 <div class="card">
-                    <h3><i class="fas fa-trending-up"></i> Sales Performance</h3>
+                    <h3>📈 Sales Performance</h3>
                     <div class="chart-container">
                         <canvas id="salesChart"></canvas>
                     </div>
                 </div>
                 
                 <div class="card">
-                    <h3><i class="fas fa-map-marker-alt"></i> Warehouse Utilization</h3>
+                    <h3>🏬 Warehouse Analysis</h3>
                     <div class="chart-container">
                         <canvas id="warehouseChart"></canvas>
                     </div>
@@ -516,40 +286,24 @@
             </div>
 
             <div class="card">
-                <h3><i class="fas fa-lightbulb"></i> Business Insights</h3>
+                <h3>💡 Business Insights</h3>
                 <div class="grid-3">
                     <div class="insight-card">
-                        <h4><i class="fas fa-rocket"></i> Top Performer</h4>
+                        <h4>🏆 Top Performer</h4>
                         <p>Laptop Pro generates 65% of total revenue</p>
-                        <div class="badge badge-success">High Margin</div>
+                        <span class="badge badge-success">High Margin</span>
                     </div>
                     
                     <div class="insight-card">
-                        <h4><i class="fas fa-exclamation-triangle"></i> Attention Needed</h4>
+                        <h4>⚠️ Attention Needed</h4>
                         <p>Battery Pack has lowest turnover rate</p>
-                        <div class="badge badge-warning">Review Strategy</div>
+                        <span class="badge badge-warning">Review</span>
                     </div>
                     
                     <div class="insight-card">
-                        <h4><i class="fas fa-chart-line"></i> Growth Opportunity</h4>
+                        <h4>🚀 Growth Opportunity</h4>
                         <p>Electronics category shows 42% growth potential</p>
-                        <div class="badge badge-info">High Potential</div>
-                    </div>
-                </div>
-                
-                <div class="grid-2" style="margin-top: 20px;">
-                    <div class="insight-card">
-                        <h4><i class="fas fa-cube"></i> Inventory Health</h4>
-                        <p><strong>Total Value:</strong> $283,500</p>
-                        <p><strong>Turnover Rate:</strong> 2.3 months</p>
-                        <p><strong>Stock Coverage:</strong> 45 days</p>
-                    </div>
-                    
-                    <div class="insight-card">
-                        <h4><i class="fas fa-shipping-fast"></i> Supply Chain Metrics</h4>
-                        <p><strong>Order Fulfillment:</strong> 98%</p>
-                        <p><strong>Delivery Accuracy:</strong> 95%</p>
-                        <p><strong>Supplier Performance:</strong> 92%</p>
+                        <span class="badge badge-success">High Potential</span>
                     </div>
                 </div>
             </div>
@@ -558,37 +312,31 @@
         <!-- Suppliers Tab -->
         <div id="suppliers" class="tab-content">
             <div class="card">
-                <h3><i class="fas fa-truck-loading"></i> Supplier Network</h3>
+                <h3>🏢 Supplier Network</h3>
                 <p>Strategic vendor partnerships ensuring supply chain reliability</p>
                 
                 <div class="supplier-card">
-                    <h4>🏭 Global Electronics Inc</h4>
-                    <p><i class="fas fa-user"></i> <strong>Contact:</strong> John Smith</p>
-                    <p><i class="fas fa-phone"></i> <strong>Phone:</strong> +1-555-0101</p>
-                    <p><i class="fas fa-envelope"></i> <strong>Email:</strong> john@globalelectronics.com</p>
-                    <p><i class="fas fa-map-marker-alt"></i> <strong>Address:</strong> 123 Tech Park, Silicon Valley, CA</p>
-                    <p><i class="fas fa-boxes"></i> <strong>Products Supplied:</strong> Laptop Pro, Smartphone X</p>
-                    <div class="badge badge-success">Premium Partner</div>
+                    <h4>Global Electronics Inc</h4>
+                    <p><strong>Contact:</strong> John Smith</p>
+                    <p><strong>Phone:</strong> +1-555-0101</p>
+                    <p><strong>Email:</strong> john@globalelectronics.com</p>
+                    <p><strong>Products:</strong> Laptop Pro, Smartphone X</p>
                 </div>
 
                 <div class="supplier-card">
-                    <h4>🏭 Premium Raw Materials Co</h4>
-                    <p><i class="fas fa-user"></i> <strong>Contact:</strong> Sarah Johnson</p>
-                    <p><i class="fas fa-phone"></i> <strong>Phone:</strong> +1-555-0102</p>
-                    <p><i class="fas fa-envelope"></i> <strong>Email:</strong> sarah@premiummaterials.com</p>
-                    <p><i class="fas fa-map-marker-alt"></i> <strong>Address:</strong> 456 Industrial Zone, Houston, TX</p>
-                    <p><i class="fas fa-boxes"></i> <strong>Products Supplied:</strong> Aluminum Chassis</p>
-                    <div class="badge badge-info">Reliable Supplier</div>
+                    <h4>Premium Raw Materials Co</h4>
+                    <p><strong>Contact:</strong> Sarah Johnson</p>
+                    <p><strong>Phone:</strong> +1-555-0102</p>
+                    <p><strong>Email:</strong> sarah@premiummaterials.com</p>
+                    <p><strong>Products:</strong> Aluminum Chassis</p>
                 </div>
 
                 <div class="supplier-card">
-                    <h4>🏭 Fast Components Ltd</h4>
-                    <p><i class="fas fa-user"></i> <strong>Contact:</strong> Mike Chen</p>
-                    <p><i class="fas fa-phone"></i> <strong>Phone:</strong> +1-555-0103</p>
-                    <p><i class="fas fa-envelope"></i> <strong>Email:</strong> mike@fastcomponents.com</p>
-                    <p><i class="fas fa-map-marker-alt"></i> <strong>Address:</strong> 789 Manufacturing District, Detroit, MI</p>
-                    <p><i class="fas fa-boxes"></i> <strong>Products Supplied:</strong> Battery Pack</p>
-                    <div class="badge badge-warning">New Partner</div>
+                    <h4>Fast Components Ltd</h4>
+                    <p><strong>Contact:</strong> Mike Chen</p>
+                    <p><strong>Phone:</strong> +1-555-0103</p>
+                    <p><strong>Email:</strong> mike@fastcomponents.com</p>
+                    <p><strong>Products:</strong> Battery Pack</p>
                 </div>
             </div>
         </div>
@@ -596,7 +344,7 @@
         <!-- Products Tab -->
         <div id="products" class="tab-content">
             <div class="card">
-                <h3><i class="fas fa-boxes"></i> Product Catalog</h3>
+                <h3>📦 Product Catalog</h3>
                 <p>Comprehensive product portfolio with real-time inventory tracking</p>
                 
                 <table>
@@ -604,7 +352,6 @@
                         <tr>
                             <th>Product</th>
                             <th>Category</th>
-                            <th>Description</th>
                             <th>Price</th>
                             <th>Supplier</th>
                             <th>Status</th>
@@ -612,33 +359,29 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>💻 Laptop Pro</strong></td>
+                            <td><strong>Laptop Pro</strong></td>
                             <td>Electronics</td>
-                            <td>High-performance business laptop</td>
                             <td>$1,200.00</td>
                             <td>Global Electronics</td>
                             <td><span class="badge badge-success">Active</span></td>
                         </tr>
                         <tr>
-                            <td><strong>📱 Smartphone X</strong></td>
+                            <td><strong>Smartphone X</strong></td>
                             <td>Electronics</td>
-                            <td>Latest smartphone model</td>
                             <td>$800.00</td>
                             <td>Global Electronics</td>
                             <td><span class="badge badge-success">Active</span></td>
                         </tr>
                         <tr>
-                            <td><strong>⚙️ Aluminum Chassis</strong></td>
+                            <td><strong>Aluminum Chassis</strong></td>
                             <td>Raw Materials</td>
-                            <td>Premium aluminum body for devices</td>
                             <td>$150.00</td>
                             <td>Premium Materials</td>
                             <td><span class="badge badge-success">Active</span></td>
                         </tr>
                         <tr>
-                            <td><strong>🔋 Battery Pack</strong></td>
+                            <td><strong>Battery Pack</strong></td>
                             <td>Components</td>
-                            <td>High-capacity lithium battery</td>
                             <td>$90.00</td>
                             <td>Fast Components</td>
                             <td><span class="badge badge-success">Active</span></td>
@@ -651,7 +394,7 @@
         <!-- Inventory Tab -->
         <div id="inventory" class="tab-content">
             <div class="card">
-                <h3><i class="fas fa-warehouse"></i> Inventory Management</h3>
+                <h3>🏬 Inventory Management</h3>
                 <p>Real-time stock levels across multiple warehouse locations</p>
                 
                 <table>
@@ -662,7 +405,6 @@
                             <th>Quantity</th>
                             <th>Status</th>
                             <th>Value</th>
-                            <th>Last Updated</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -670,9 +412,8 @@
                             <td>Laptop Pro</td>
                             <td>West Coast Hub</td>
                             <td>50 units</td>
-                            <td><span class="badge badge-warning">Monitor</span></td>
+                            <td><span class="badge badge-warning">Low</span></td>
                             <td>$60,000</td>
-                            <td>2024-01-15</td>
                         </tr>
                         <tr>
                             <td>Laptop Pro</td>
@@ -680,136 +421,79 @@
                             <td>30 units</td>
                             <td><span class="badge badge-warning">Low</span></td>
                             <td>$36,000</td>
-                            <td>2024-01-15</td>
                         </tr>
                         <tr>
                             <td>Smartphone X</td>
                             <td>West Coast Hub</td>
                             <td>100 units</td>
-                            <td><span class="badge badge-success">Optimal</span></td>
+                            <td><span class="badge badge-success">Good</span></td>
                             <td>$80,000</td>
-                            <td>2024-01-16</td>
                         </tr>
                         <tr>
                             <td>Smartphone X</td>
                             <td>East Coast Storage</td>
                             <td>80 units</td>
-                            <td><span class="badge badge-success">Optimal</span></td>
+                            <td><span class="badge badge-success">Good</span></td>
                             <td>$64,000</td>
-                            <td>2024-01-16</td>
                         </tr>
                         <tr>
                             <td>Aluminum Chassis</td>
                             <td>Central Distribution</td>
                             <td>200 units</td>
-                            <td><span class="badge badge-success">Optimal</span></td>
+                            <td><span class="badge badge-success">Good</span></td>
                             <td>$30,000</td>
-                            <td>2024-01-17</td>
                         </tr>
                         <tr>
                             <td>Battery Pack</td>
                             <td>East Coast Storage</td>
                             <td>150 units</td>
-                            <td><span class="badge badge-success">Optimal</span></td>
+                            <td><span class="badge badge-success">Good</span></td>
                             <td>$13,500</td>
-                            <td>2024-01-17</td>
                         </tr>
                     </tbody>
                 </table>
-                
-                <div class="insight-card" style="margin-top: 20px;">
-                    <h4><i class="fas fa-chart-line"></i> Inventory Summary</h4>
-                    <div class="grid-3">
-                        <div>
-                            <p><strong>Total Units:</strong> 610 units</p>
-                            <p><strong>Total Value:</strong> $283,500</p>
-                        </div>
-                        <div>
-                            <p><strong>Warehouses:</strong> 3 locations</p>
-                            <p><strong>Products:</strong> 4 categories</p>
-                        </div>
-                        <div>
-                            <p><strong>Avg Stock Level:</strong> 152 units</p>
-                            <p><strong>Health Score:</strong> 88%</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
         <!-- Orders Tab -->
         <div id="orders" class="tab-content">
             <div class="card">
-                <h3><i class="fas fa-shopping-cart"></i> Order Management</h3>
+                <h3>🛒 Order Management</h3>
                 <p>Complete order processing and fulfillment tracking</p>
                 
                 <div class="supplier-card">
-                    <h4>📋 Order #001 - <span class="badge badge-success">Shipped</span></h4>
+                    <h4>Order #001 - <span class="badge badge-success">Shipped</span></h4>
                     <p><strong>Customer:</strong> Tech World Retail</p>
-                    <p><strong>Order Date:</strong> 2024-01-15</p>
-                    <p><strong>Required Date:</strong> 2024-01-25</p>
                     <p><strong>Total Amount:</strong> $2,400.00</p>
-                    <p><strong>Items:</strong></p>
-                    <ul>
-                        <li>💻 Laptop Pro × 2 units = $2,400</li>
-                        <li>📱 Smartphone X × 1 unit = $800</li>
-                    </ul>
+                    <p><strong>Items:</strong> Laptop Pro × 2, Smartphone X × 1</p>
                 </div>
 
                 <div class="supplier-card">
-                    <h4>📋 Order #002 - <span class="badge badge-warning">Processing</span></h4>
+                    <h4>Order #002 - <span class="badge badge-warning">Processing</span></h4>
                     <p><strong>Customer:</strong> Corporate Solutions Inc</p>
-                    <p><strong>Order Date:</strong> 2024-01-16</p>
-                    <p><strong>Required Date:</strong> 2024-01-26</p>
                     <p><strong>Total Amount:</strong> $1,600.00</p>
-                    <p><strong>Items:</strong></p>
-                    <ul>
-                        <li>💻 Laptop Pro × 1 unit = $1,200</li>
-                        <li>🔋 Battery Pack × 4 units = $360</li>
-                    </ul>
+                    <p><strong>Items:</strong> Laptop Pro × 1, Battery Pack × 4</p>
                 </div>
 
                 <div class="supplier-card">
-                    <h4>📋 Order #003 - <span class="badge badge-danger">Pending</span></h4>
+                    <h4>Order #003 - <span class="badge badge-danger">Pending</span></h4>
                     <p><strong>Customer:</strong> Global Office Supplies</p>
-                    <p><strong>Order Date:</strong> 2024-01-17</p>
-                    <p><strong>Required Date:</strong> 2024-01-27</p>
                     <p><strong>Total Amount:</strong> $450.00</p>
-                    <p><strong>Items:</strong></p>
-                    <ul>
-                        <li>⚙️ Aluminum Chassis × 3 units = $450</li>
-                    </ul>
-                </div>
-
-                <div class="insight-card" style="margin-top: 20px;">
-                    <h4><i class="fas fa-chart-bar"></i> Order Analytics</h4>
-                    <div class="grid-3">
-                        <div>
-                            <p><strong>Total Orders:</strong> 3</p>
-                            <p><strong>Total Revenue:</strong> $4,450</p>
-                        </div>
-                        <div>
-                            <p><strong>Avg Order Value:</strong> $1,483</p>
-                            <p><strong>Fulfillment Rate:</strong> 98%</p>
-                        </div>
-                        <div>
-                            <p><strong>Customer Satisfaction:</strong> 95%</p>
-                            <p><strong>Repeat Customers:</strong> 67%</p>
-                        </div>
-                    </div>
+                    <p><strong>Items:</strong> Aluminum Chassis × 3</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Footer with Creator Name -->
     <div class="footer">
-        <p>Supply Chain Management System &copy; 2024 | Designed and Developed by Syed Zeeshan Arshad</p>
+        <p><strong>Supply Chain Management System</strong> | Developed by Syed Zeeshan Arshad | © 2024</p>
     </div>
 
     <script>
         // Tab Management
         function openTab(tabName) {
+            // Hide all tabs
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
             });
@@ -817,6 +501,7 @@
                 tab.classList.remove('active');
             });
             
+            // Show selected tab
             document.getElementById(tabName).classList.add('active');
             event.currentTarget.classList.add('active');
             
@@ -828,148 +513,137 @@
 
         // Chart Initialization
         function initializeCharts() {
-            // Dashboard Pie Chart
-            const dashboardCtx = document.getElementById('dashboardChart').getContext('2d');
-            new Chart(dashboardCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Laptop Pro', 'Smartphone X', 'Aluminum Chassis', 'Battery Pack'],
-                    datasets: [{
-                        data: [36, 51, 39, 23],
-                        backgroundColor: ['#3498db', '#2ecc71', '#e74c3c', '#f39c12']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        },
-                        title: {
-                            display: true,
-                            text: 'Revenue Distribution'
+            // Dashboard Chart
+            if (document.getElementById('dashboardChart')) {
+                const dashboardCtx = document.getElementById('dashboardChart').getContext('2d');
+                new Chart(dashboardCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Laptop Pro', 'Smartphone X', 'Aluminum Chassis', 'Battery Pack'],
+                        datasets: [{
+                            data: [36, 51, 39, 23],
+                            backgroundColor: ['#3498db', '#2ecc71', '#e74c3c', '#f39c12']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Revenue Distribution'
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
 
             // Category Chart
-            const categoryCtx = document.getElementById('categoryChart').getContext('2d');
-            new Chart(categoryCtx, {
-                type: 'pie',
-                data: {
-                    labels: ['Electronics', 'Raw Materials', 'Components'],
-                    datasets: [{
-                        data: [2, 1, 1],
-                        backgroundColor: ['#3498db', '#2ecc71', '#e74c3c']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        }
+            if (document.getElementById('categoryChart')) {
+                const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+                new Chart(categoryCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Electronics', 'Raw Materials', 'Components'],
+                        datasets: [{
+                            data: [2, 1, 1],
+                            backgroundColor: ['#3498db', '#2ecc71', '#e74c3c']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
                     }
-                }
-            });
+                });
+            }
 
             // Value Chart
-            const valueCtx = document.getElementById('valueChart').getContext('2d');
-            new Chart(valueCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['West Coast', 'Central', 'East Coast'],
-                    datasets: [{
-                        label: 'Inventory Value ($)',
-                        data: [140000, 66000, 77500],
-                        backgroundColor: '#3498db'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+            if (document.getElementById('valueChart')) {
+                const valueCtx = document.getElementById('valueChart').getContext('2d');
+                new Chart(valueCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['West Coast', 'Central', 'East Coast'],
+                        datasets: [{
+                            label: 'Inventory Value ($)',
+                            data: [140000, 66000, 77500],
+                            backgroundColor: '#3498db'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
                     }
-                }
-            });
+                });
+            }
 
             // Stock Chart
-            const stockCtx = document.getElementById('stockChart').getContext('2d');
-            new Chart(stockCtx, {
-                type: 'polarArea',
-                data: {
-                    labels: ['Laptop Pro', 'Smartphone X', 'Aluminum', 'Battery'],
-                    datasets: [{
-                        data: [80, 180, 200, 150],
-                        backgroundColor: ['#3498db', '#2ecc71', '#e74c3c', '#f39c12']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false
-                }
-            });
+            if (document.getElementById('stockChart')) {
+                const stockCtx = document.getElementById('stockChart').getContext('2d');
+                new Chart(stockCtx, {
+                    type: 'polarArea',
+                    data: {
+                        labels: ['Laptop Pro', 'Smartphone X', 'Aluminum', 'Battery'],
+                        datasets: [{
+                            data: [80, 180, 200, 150],
+                            backgroundColor: ['#3498db', '#2ecc71', '#e74c3c', '#f39c12']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+            }
 
             // Sales Chart
-            const salesCtx = document.getElementById('salesChart').getContext('2d');
-            new Chart(salesCtx, {
-                type: 'line',
-                data: {
-                    labels: ['Jan 10', 'Jan 12', 'Jan 14', 'Jan 16', 'Jan 18'],
-                    datasets: [{
-                        label: 'Daily Revenue ($)',
-                        data: [1200, 1900, 1500, 2400, 1800],
-                        borderColor: '#3498db',
-                        tension: 0.4,
-                        fill: true,
-                        backgroundColor: 'rgba(52, 152, 219, 0.1)'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+            if (document.getElementById('salesChart')) {
+                const salesCtx = document.getElementById('salesChart').getContext('2d');
+                new Chart(salesCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan 10', 'Jan 12', 'Jan 14', 'Jan 16', 'Jan 18'],
+                        datasets: [{
+                            label: 'Daily Revenue ($)',
+                            data: [1200, 1900, 1500, 2400, 1800],
+                            borderColor: '#3498db',
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
                     }
-                }
-            });
+                });
+            }
 
             // Warehouse Chart
-            const warehouseCtx = document.getElementById('warehouseChart').getContext('2d');
-            new Chart(warehouseCtx, {
-                type: 'radar',
-                data: {
-                    labels: ['Capacity', 'Utilization', 'Value', 'Products', 'Efficiency'],
-                    datasets: [{
-                        label: 'West Coast',
-                        data: [85, 78, 90, 70, 82],
-                        borderColor: '#3498db',
-                        backgroundColor: 'rgba(52, 152, 219, 0.2)'
-                    }, {
-                        label: 'Central',
-                        data: [75, 85, 65, 80, 75],
-                        borderColor: '#2ecc71',
-                        backgroundColor: 'rgba(46, 204, 113, 0.2)'
-                    }, {
-                        label: 'East Coast',
-                        data: [80, 72, 78, 85, 80],
-                        borderColor: '#e74c3c',
-                        backgroundColor: 'rgba(231, 76, 60, 0.2)'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false
-                }
-            });
+            if (document.getElementById('warehouseChart')) {
+                const warehouseCtx = document.getElementById('warehouseChart').getContext('2d');
+                new Chart(warehouseCtx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Capacity', 'Utilization', 'Value', 'Products', 'Efficiency'],
+                        datasets: [{
+                            label: 'West Coast',
+                            data: [85, 78, 90, 70, 82],
+                            borderColor: '#3498db'
+                        }, {
+                            label: 'Central',
+                            data: [75, 85, 65, 80, 75],
+                            borderColor: '#2ecc71'
+                        }, {
+                            label: 'East Coast',
+                            data: [80, 72, 78, 85, 80],
+                            borderColor: '#e74c3c'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+            }
         }
 
         // Initialize on load
