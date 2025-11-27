@@ -3,22 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SupplyChain Pro | Enterprise Supply Chain Management</title>
+    <title>E2E SCM | Enterprise Supply Chain Management</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --secondary: #64748b;
-            --accent: #f59e0b;
-            --success: #10b981;
-            --danger: #ef4444;
-            --dark: #1e293b;
-            --light: #f8fafc;
-            --gray: #94a3b8;
-            --border: #e2e8f0;
+            --primary: #000000;
+            --primary-dark: #333333;
+            --secondary: #5c5c5c;
+            --accent: #e82127;
+            --accent-light: #ff4d4f;
+            --success: #00a650;
+            --warning: #ff9500;
+            --danger: #e82127;
+            --dark: #1a1a1a;
+            --light: #f5f5f5;
+            --gray: #8e8e8e;
+            --border: #e0e0e0;
+            --card-bg: #ffffff;
+            --hover: #f8f8f8;
         }
 
         * {
@@ -29,10 +33,11 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: #f9f9f9;
             min-height: 100vh;
             color: var(--dark);
             line-height: 1.6;
+            font-size: 14px;
         }
 
         .container {
@@ -42,14 +47,13 @@
         }
 
         .premium-header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 25px 0;
+            background: var(--primary);
+            color: white;
+            padding: 20px 0;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            border-bottom: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
         .header-content {
@@ -62,64 +66,66 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            font-size: 1.5em;
+            font-size: 1.4em;
             font-weight: 700;
-            color: var(--primary);
+            color: white;
+        }
+
+        .logo-accent {
+            color: var(--accent);
         }
 
         .creator-tag {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            background: var(--accent);
             color: white;
             padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9em;
+            border-radius: 4px;
+            font-size: 0.85em;
             font-weight: 500;
         }
 
         .hero {
-            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.98) 100%);
-            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 60px 0;
             text-align: center;
-            border-radius: 0 0 30px 30px;
             margin-bottom: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
         }
 
         .hero h1 {
-            font-size: 3.5em;
+            font-size: 2.8em;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             line-height: 1.2;
         }
 
         .hero p {
-            font-size: 1.3em;
-            color: var(--secondary);
-            max-width: 600px;
+            font-size: 1.1em;
+            color: var(--light);
+            max-width: 700px;
             margin: 0 auto 30px;
             font-weight: 400;
+            opacity: 0.9;
         }
 
         .dashboard-container {
-            background: white;
-            border-radius: 24px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             overflow: hidden;
             margin-bottom: 60px;
+            border: 1px solid var(--border);
         }
 
         .elegant-tabs {
             display: flex;
             background: var(--light);
             border-bottom: 1px solid var(--border);
-            padding: 0 30px;
+            padding: 0;
         }
 
         .elegant-tab {
-            padding: 20px 30px;
+            padding: 18px 30px;
             cursor: pointer;
             background: transparent;
             border: none;
@@ -130,16 +136,18 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 0.95em;
+            font-size: 0.9em;
         }
 
         .elegant-tab:hover {
+            background: var(--hover);
             color: var(--primary);
         }
 
         .elegant-tab.active {
             color: var(--primary);
             font-weight: 600;
+            background: white;
         }
 
         .elegant-tab.active::after {
@@ -149,25 +157,24 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border-radius: 3px 3px 0 0;
+            background: var(--accent);
         }
 
         .tab-content {
             display: none;
-            padding: 40px;
+            padding: 30px;
             min-height: 600px;
         }
 
         .tab-content.active {
             display: block;
-            animation: fadeInUp 0.6s ease;
+            animation: fadeInUp 0.5s ease;
         }
 
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(15px);
             }
             to {
                 opacity: 1;
@@ -177,85 +184,88 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 24px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
         }
 
         .stat-card {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            padding: 30px;
-            border-radius: 16px;
+            background: white;
+            color: var(--dark);
+            padding: 24px;
+            border-radius: 10px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s ease;
+            border-top: 4px solid var(--accent);
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
         }
 
         .stat-icon {
-            font-size: 2em;
-            margin-bottom: 15px;
-            opacity: 0.9;
+            font-size: 1.8em;
+            margin-bottom: 12px;
+            color: var(--accent);
         }
 
         .stat-number {
-            font-size: 2.8em;
+            font-size: 2.2em;
             font-weight: 700;
-            margin: 10px 0;
+            margin: 8px 0;
+            color: var(--primary);
         }
 
         .stat-label {
-            font-size: 0.95em;
-            opacity: 0.9;
+            font-size: 0.9em;
+            color: var(--secondary);
             font-weight: 500;
         }
 
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
+            gap: 24px;
+            margin-bottom: 24px;
         }
 
         .grid-3 {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 30px;
+            gap: 20px;
+            margin-bottom: 24px;
         }
 
         .content-card {
             background: white;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 24px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             border: 1px solid var(--border);
         }
 
         .content-card h3 {
             color: var(--dark);
-            margin-bottom: 20px;
-            font-size: 1.3em;
+            margin-bottom: 18px;
+            font-size: 1.2em;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .chart-container {
             position: relative;
-            height: 300px;
-            margin: 20px 0;
+            height: 260px;
+            margin: 16px 0;
         }
 
         .badge {
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.8em;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 0.75em;
             font-weight: 600;
             display: inline-block;
         }
@@ -266,7 +276,7 @@
         }
 
         .badge-warning {
-            background: var(--accent);
+            background: var(--warning);
             color: white;
         }
 
@@ -275,23 +285,28 @@
             color: white;
         }
 
+        .badge-primary {
+            background: var(--primary);
+            color: white;
+        }
+
         .insight-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin: 25px 0;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
         }
 
         .insight-card {
             background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             border-left: 4px solid var(--success);
         }
 
         .insight-card.warning {
-            border-left-color: var(--accent);
+            border-left-color: var(--warning);
         }
 
         .insight-card.danger {
@@ -299,95 +314,157 @@
         }
 
         .analytics-hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            padding: 40px;
-            border-radius: 16px;
-            margin-bottom: 30px;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 24px;
             text-align: center;
         }
 
         .analytics-hero h2 {
-            font-size: 2.2em;
-            margin-bottom: 10px;
+            font-size: 1.8em;
+            margin-bottom: 8px;
             font-weight: 700;
         }
 
         .premium-footer {
-            background: var(--dark);
+            background: var(--primary);
             color: white;
-            padding: 40px 0;
+            padding: 30px 0;
             text-align: center;
             margin-top: 60px;
         }
 
         .creator-signature {
-            font-size: 1.1em;
+            font-size: 1em;
             font-weight: 600;
-            margin-bottom: 10px;
-            color: var(--primary);
+            margin-bottom: 8px;
+            color: var(--accent);
         }
 
         .data-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
+            margin: 16px 0;
+            font-size: 0.85em;
         }
 
         .data-table th {
             background: var(--light);
-            padding: 15px;
+            padding: 12px 15px;
             text-align: left;
             font-weight: 600;
             border-bottom: 2px solid var(--border);
+            color: var(--secondary);
         }
 
         .data-table td {
-            padding: 12px 15px;
+            padding: 10px 15px;
             border-bottom: 1px solid var(--border);
+        }
+
+        .data-table tr:hover {
+            background-color: var(--hover);
         }
 
         .metric-card {
             background: white;
-            padding: 25px;
-            border-radius: 12px;
+            padding: 20px;
+            border-radius: 8px;
             text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            border-top: 4px solid var(--primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-top: 4px solid var(--accent);
         }
 
         .metric-value {
-            font-size: 2.5em;
+            font-size: 2em;
             font-weight: 700;
             color: var(--primary);
-            margin: 10px 0;
+            margin: 8px 0;
         }
 
         .metric-label {
             color: var(--secondary);
-            font-size: 0.9em;
+            font-size: 0.85em;
         }
 
         .supplier-node {
-            background: var(--primary);
-            color: white;
+            background: white;
+            color: var(--dark);
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 8px;
             text-align: center;
-            margin: 15px;
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-top: 4px solid var(--accent);
         }
 
         .supply-chain {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .mini-stat {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .mini-stat i {
+            color: var(--accent);
+            width: 20px;
+        }
+
+        .search-bar {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 4px 0 0 4px;
+            font-size: 0.9em;
+        }
+
+        .search-bar button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--light);
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
         }
 
         @media (max-width: 1024px) {
             .grid-2, .grid-3 {
                 grid-template-columns: 1fr;
+            }
+            
+            .elegant-tabs {
+                overflow-x: auto;
+            }
+            
+            .elegant-tab {
+                padding: 15px 20px;
+                white-space: nowrap;
             }
         }
     </style>
@@ -398,11 +475,11 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <i class="fas fa-warehouse"></i>
-                    SupplyChain Pro
+                    <i class="fas fa-network-wired"></i>
+                    <span>E2E <span class="logo-accent">SCM</span></span>
                 </div>
                 <div class="creator-tag">
-                    <i class="fas fa-code"></i> Built by Syed Zeeshan Arshad
+                    <i class="fas fa-code"></i> Enterprise Supply Chain Platform
                 </div>
             </div>
         </div>
@@ -411,8 +488,8 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <h1>Enterprise Supply Chain Management</h1>
-            <p>Transform your business operations with AI-powered inventory optimization, real-time analytics, and seamless supply chain integration</p>
+            <h1>End-to-End Supply Chain Management</h1>
+            <p>Optimize your global supply network with AI-powered insights, real-time visibility, and predictive analytics for 150+ products across 50+ suppliers</p>
         </div>
     </section>
 
@@ -442,24 +519,24 @@
             <div id="dashboard" class="tab-content active">
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-truck-loading"></i></div>
-                        <div class="stat-number">3</div>
+                        <div class="stat-icon"><i class="fas fa-industry"></i></div>
+                        <div class="stat-number">52</div>
                         <div class="stat-label">Strategic Suppliers</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-boxes"></i></div>
-                        <div class="stat-number">4</div>
-                        <div class="stat-label">Product Lines</div>
+                        <div class="stat-number">158</div>
+                        <div class="stat-label">Product Variants</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-warehouse"></i></div>
-                        <div class="stat-number">3</div>
-                        <div class="stat-label">Warehouse Hubs</div>
+                        <div class="stat-number">18</div>
+                        <div class="stat-label">Distribution Centers</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-shopping-cart"></i></div>
-                        <div class="stat-number">$4.45K</div>
-                        <div class="stat-label">Monthly Revenue</div>
+                        <div class="stat-number">$2.8M</div>
+                        <div class="stat-label">Quarterly Revenue</div>
                     </div>
                 </div>
 
@@ -469,34 +546,58 @@
                         <div class="chart-container">
                             <canvas id="healthChart"></canvas>
                         </div>
+                        <div class="mini-stat">
+                            <i class="fas fa-check-circle"></i>
+                            <span>87 products at optimal levels</span>
+                        </div>
+                        <div class="mini-stat">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>42 products need attention</span>
+                        </div>
+                        <div class="mini-stat">
+                            <i class="fas fa-times-circle"></i>
+                            <span>29 products at critical levels</span>
+                        </div>
                     </div>
                     
                     <div class="content-card">
-                        <h3><i class="fas fa-trending-up"></i> Revenue Streams</h3>
+                        <h3><i class="fas fa-trending-up"></i> Revenue Distribution</h3>
                         <div class="chart-container">
                             <canvas id="revenueChart"></canvas>
+                        </div>
+                        <div class="mini-stat">
+                            <i class="fas fa-microchip"></i>
+                            <span>Electronics: 48% of revenue</span>
+                        </div>
+                        <div class="mini-stat">
+                            <i class="fas fa-car-battery"></i>
+                            <span>Battery Systems: 32% of revenue</span>
+                        </div>
+                        <div class="mini-stat">
+                            <i class="fas fa-cogs"></i>
+                            <span>Components: 20% of revenue</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="content-card">
-                    <h3><i class="fas fa-lightbulb"></i> Key Business Insights</h3>
+                    <h3><i class="fas fa-lightbulb"></i> Strategic Insights</h3>
                     <div class="insight-grid">
                         <div class="insight-card">
                             <h4><i class="fas fa-rocket"></i> High Performance</h4>
-                            <p>Laptop Pro contributes 65% of total revenue with 42% profit margin</p>
+                            <p>Model S components contribute 42% of total revenue with 38% profit margin</p>
                             <span class="badge badge-success">Optimized</span>
                         </div>
                         
                         <div class="insight-card warning">
                             <h4><i class="fas fa-clock"></i> Attention Required</h4>
-                            <p>Battery Pack inventory turnover below target by 15%</p>
+                            <p>Battery inventory turnover below target by 18% across 12 variants</p>
                             <span class="badge badge-warning">Monitor</span>
                         </div>
                         
                         <div class="insight-card">
                             <h4><i class="fas fa-bolt"></i> Growth Opportunity</h4>
-                            <p>Electronics category shows 78% customer demand growth</p>
+                            <p>Energy products category shows 92% customer demand growth</p>
                             <span class="badge badge-success">High Potential</span>
                         </div>
                     </div>
@@ -507,19 +608,19 @@
             <div id="analytics" class="tab-content">
                 <div class="analytics-hero">
                     <h2><i class="fas fa-chart-network"></i> Advanced Business Intelligence</h2>
-                    <p>Data-driven insights for strategic decision making and operational excellence</p>
+                    <p>Data-driven insights for strategic decision making across 158 product variants</p>
                 </div>
 
                 <div class="grid-3">
                     <div class="content-card">
-                        <h3><i class="fas fa-chart-pie"></i> Product Mix</h3>
+                        <h3><i class="fas fa-chart-pie"></i> Product Category Mix</h3>
                         <div class="chart-container">
                             <canvas id="mixChart"></canvas>
                         </div>
                     </div>
                     
                     <div class="content-card">
-                        <h3><i class="fas fa-money-bill-wave"></i> Value Analysis</h3>
+                        <h3><i class="fas fa-money-bill-wave"></i> Inventory Value Analysis</h3>
                         <div class="chart-container">
                             <canvas id="valueChart"></canvas>
                         </div>
@@ -538,47 +639,61 @@
                     <div class="grid-3">
                         <div class="insight-card">
                             <h4><i class="fas fa-arrow-up"></i> Demand Forecast</h4>
-                            <p>Q2 growth projection: <strong>+28%</strong></p>
+                            <p>Q3 growth projection: <strong>+32%</strong></p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 85%"></div>
+                            </div>
                             <span class="badge badge-success">High Confidence</span>
                         </div>
                         
                         <div class="insight-card warning">
                             <h4><i class="fas fa-clock"></i> Reorder Points</h4>
-                            <p>Smartphone X needs restock in <strong>12 days</strong></p>
+                            <p>Model 3 components need restock in <strong>9 days</strong></p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 65%"></div>
+                            </div>
                             <span class="badge badge-warning">Monitor</span>
                         </div>
                         
                         <div class="insight-card">
                             <h4><i class="fas fa-bullseye"></i> Optimization</h4>
-                            <p>Potential cost savings: <strong>$18,500</strong></p>
+                            <p>Potential cost savings: <strong>$124,500</strong></p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 72%"></div>
+                            </div>
                             <span class="badge badge-success">Actionable</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Operations Tab - NOW WITH DATA -->
+            <!-- Operations Tab -->
             <div id="operations" class="tab-content">
-                <div class="analytics-hero" style="background: linear-gradient(135deg, #10b981, #059669);">
+                <div class="analytics-hero" style="background: linear-gradient(135deg, #333333, #5c5c5c);">
                     <h2><i class="fas fa-cogs"></i> Operational Excellence</h2>
-                    <p>Streamlined processes and real-time operational intelligence</p>
+                    <p>Streamlined processes and real-time operational intelligence across 18 distribution centers</p>
                 </div>
 
                 <div class="stats-grid">
-                    <div class="stat-card" style="background: linear-gradient(135deg, #10b981, #059669);">
+                    <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-shipping-fast"></i></div>
-                        <div class="stat-number">98%</div>
+                        <div class="stat-number">98.7%</div>
                         <div class="stat-label">Order Fulfillment Rate</div>
                     </div>
-                    <div class="stat-card" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                    <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-warehouse"></i></div>
-                        <div class="stat-number">85%</div>
+                        <div class="stat-number">87%</div>
                         <div class="stat-label">Warehouse Utilization</div>
                     </div>
-                    <div class="stat-card" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                    <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-people-carry"></i></div>
-                        <div class="stat-number">92%</div>
+                        <div class="stat-number">94%</div>
                         <div class="stat-label">Labor Productivity</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <div class="stat-number">22.5 hrs</div>
+                        <div class="stat-label">Avg. Order Cycle Time</div>
                     </div>
                 </div>
 
@@ -597,26 +712,32 @@
                             <tbody>
                                 <tr>
                                     <td>Order Processing Time</td>
-                                    <td>24 hours</td>
+                                    <td>22.5 hours</td>
                                     <td>20 hours</td>
                                     <td><span class="badge badge-warning">Needs Improvement</span></td>
                                 </tr>
                                 <tr>
                                     <td>Inventory Accuracy</td>
-                                    <td>99.2%</td>
+                                    <td>99.4%</td>
                                     <td>99.5%</td>
                                     <td><span class="badge badge-success">On Target</span></td>
                                 </tr>
                                 <tr>
                                     <td>Cost per Unit</td>
-                                    <td>$0.85</td>
-                                    <td>$0.80</td>
+                                    <td>$2.85</td>
+                                    <td>$2.75</td>
                                     <td><span class="badge badge-warning">Slightly High</span></td>
                                 </tr>
                                 <tr>
                                     <td>Quality Pass Rate</td>
-                                    <td>98.5%</td>
+                                    <td>98.7%</td>
                                     <td>98.0%</td>
+                                    <td><span class="badge badge-success">Exceeding</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Supplier On-Time Delivery</td>
+                                    <td>96.2%</td>
+                                    <td>95.0%</td>
                                     <td><span class="badge badge-success">Exceeding</span></td>
                                 </tr>
                             </tbody>
@@ -636,52 +757,69 @@
                     <div class="insight-grid">
                         <div class="insight-card">
                             <h4><i class="fas fa-check-circle"></i> Strength</h4>
-                            <p>Quality control processes are exceeding industry standards by 2.5%</p>
+                            <p>Automated quality control processes are exceeding industry standards by 3.2%</p>
                         </div>
                         
                         <div class="insight-card warning">
                             <h4><i class="fas fa-exclamation-triangle"></i> Opportunity</h4>
-                            <p>Order processing time can be optimized through automation</p>
+                            <p>Order processing time can be optimized through AI routing algorithms</p>
                         </div>
                         
                         <div class="insight-card">
                             <h4><i class="fas fa-bullseye"></i> Recommendation</h4>
-                            <p>Implement automated sorting system to reduce processing time by 30%</p>
+                            <p>Implement predictive maintenance to reduce downtime by 18%</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Supply Network Tab - NOW WITH DATA -->
+            <!-- Supply Network Tab -->
             <div id="supply-chain" class="tab-content">
-                <div class="analytics-hero" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                <div class="analytics-hero" style="background: linear-gradient(135deg, #5c5c5c, #8e8e8e);">
                     <h2><i class="fas fa-network-wired"></i> Supply Network Intelligence</h2>
-                    <p>End-to-end supply chain visibility and partner ecosystem management</p>
+                    <p>End-to-end supply chain visibility across 52 strategic suppliers and partners</p>
+                </div>
+
+                <div class="search-bar">
+                    <input type="text" placeholder="Search suppliers, components, or regions...">
+                    <button><i class="fas fa-search"></i></button>
                 </div>
 
                 <div class="supply-chain">
                     <div class="supplier-node">
                         <i class="fas fa-industry fa-2x"></i>
-                        <h3>Global Electronics</h3>
-                        <p>Supplier Rating: <strong>9.8/10</strong></p>
-                        <p>Products: Laptop Pro, Smartphone X</p>
+                        <h3>Global Electronics Corp</h3>
+                        <p>Supplier Rating: <strong>9.7/10</strong></p>
+                        <p>Products: 28 variants</p>
+                        <p>Lead Time: 3.2 days</p>
                         <span class="badge badge-success">Premium Partner</span>
                     </div>
                     
-                    <div class="supplier-node" style="background: linear-gradient(135deg, #10b981, #059669);">
+                    <div class="supplier-node">
                         <i class="fas fa-industry fa-2x"></i>
-                        <h3>Premium Materials</h3>
-                        <p>Supplier Rating: <strong>9.2/10</strong></p>
-                        <p>Products: Aluminum Chassis</p>
-                        <span class="badge badge-success">Reliable</span>
+                        <h3>Advanced Battery Systems</h3>
+                        <p>Supplier Rating: <strong>9.4/10</strong></p>
+                        <p>Products: 19 variants</p>
+                        <p>Lead Time: 4.1 days</p>
+                        <span class="badge badge-success">Strategic</span>
                     </div>
                     
-                    <div class="supplier-node" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                    <div class="supplier-node">
                         <i class="fas fa-industry fa-2x"></i>
-                        <h3>Fast Components</h3>
-                        <p>Supplier Rating: <strong>8.7/10</strong></p>
-                        <p>Products: Battery Pack</p>
+                        <h3>Precision Components Ltd</h3>
+                        <p>Supplier Rating: <strong>8.9/10</strong></p>
+                        <p>Products: 42 variants</p>
+                        <p>Lead Time: 5.3 days</p>
                         <span class="badge badge-warning">Developing</span>
+                    </div>
+                    
+                    <div class="supplier-node">
+                        <i class="fas fa-industry fa-2x"></i>
+                        <h3>Automotive Systems Inc</h3>
+                        <p>Supplier Rating: <strong>9.2/10</strong></p>
+                        <p>Products: 31 variants</p>
+                        <p>Lead Time: 3.8 days</p>
+                        <span class="badge badge-success">Reliable</span>
                     </div>
                 </div>
 
@@ -700,25 +838,39 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Global Electronics</td>
-                                    <td>98%</td>
-                                    <td>96%</td>
-                                    <td>2 days</td>
+                                    <td>Global Electronics Corp</td>
+                                    <td>98.7%</td>
+                                    <td>96.5%</td>
+                                    <td>3.2 days</td>
                                     <td><span class="badge badge-success">Excellent</span></td>
                                 </tr>
                                 <tr>
-                                    <td>Premium Materials</td>
-                                    <td>95%</td>
-                                    <td>94%</td>
-                                    <td>3 days</td>
+                                    <td>Advanced Battery Systems</td>
+                                    <td>97.2%</td>
+                                    <td>95.8%</td>
+                                    <td>4.1 days</td>
                                     <td><span class="badge badge-success">Good</span></td>
                                 </tr>
                                 <tr>
-                                    <td>Fast Components</td>
-                                    <td>92%</td>
-                                    <td>91%</td>
-                                    <td>4 days</td>
+                                    <td>Precision Components Ltd</td>
+                                    <td>94.5%</td>
+                                    <td>93.2%</td>
+                                    <td>5.3 days</td>
                                     <td><span class="badge badge-warning">Average</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Automotive Systems Inc</td>
+                                    <td>96.8%</td>
+                                    <td>95.1%</td>
+                                    <td>3.8 days</td>
+                                    <td><span class="badge badge-success">Good</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Energy Solutions Group</td>
+                                    <td>95.3%</td>
+                                    <td>94.7%</td>
+                                    <td>4.5 days</td>
+                                    <td><span class="badge badge-success">Good</span></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -732,43 +884,43 @@
                         <div class="insight-grid">
                             <div class="insight-card">
                                 <h4><i class="fas fa-check-circle"></i> Low Risk</h4>
-                                <p>Multiple supplier options for critical components</p>
+                                <p>Multiple supplier options for 87% of critical components</p>
                             </div>
                             <div class="insight-card warning">
                                 <h4><i class="fas fa-exclamation-triangle"></i> Medium Risk</h4>
-                                <p>Single source for specialized battery technology</p>
+                                <p>Limited sources for specialized battery technology (5 variants)</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Performance Tab - NOW WITH DATA -->
+            <!-- Performance Tab -->
             <div id="performance" class="tab-content">
-                <div class="analytics-hero" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                <div class="analytics-hero" style="background: linear-gradient(135deg, #8e8e8e, #b0b0b0);">
                     <h2><i class="fas fa-trophy"></i> Performance Excellence</h2>
                     <p>Key performance indicators and strategic business metrics</p>
                 </div>
 
                 <div class="stats-grid">
-                    <div class="stat-card" style="background: linear-gradient(135deg, #10b981, #059669);">
+                    <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-bullseye"></i></div>
-                        <div class="stat-number">94%</div>
+                        <div class="stat-number">96.2%</div>
                         <div class="stat-label">Overall Performance</div>
                     </div>
-                    <div class="stat-card" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                    <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
-                        <div class="stat-number">+28%</div>
+                        <div class="stat-number">+32%</div>
                         <div class="stat-label">Quarterly Growth</div>
                     </div>
-                    <div class="stat-card" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+                    <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-percentage"></i></div>
-                        <div class="stat-number">2.3%</div>
+                        <div class="stat-number">4.7%</div>
                         <div class="stat-label">Cost Reduction</div>
                     </div>
-                    <div class="stat-card" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                    <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-user-check"></i></div>
-                        <div class="stat-number">96%</div>
+                        <div class="stat-number">97.3%</div>
                         <div class="stat-label">Customer Satisfaction</div>
                     </div>
                 </div>
@@ -779,11 +931,11 @@
                         <div class="metric-label">Industry Ranking</div>
                     </div>
                     <div class="metric-card">
-                        <div class="metric-value">98%</div>
+                        <div class="metric-value">98.7%</div>
                         <div class="metric-label">Service Level</div>
                     </div>
                     <div class="metric-card">
-                        <div class="metric-value">4.8/5</div>
+                        <div class="metric-value">4.9/5</div>
                         <div class="metric-label">Partner Rating</div>
                     </div>
                 </div>
@@ -809,19 +961,19 @@
                     <div class="insight-grid">
                         <div class="insight-card">
                             <h4><i class="fas fa-rocket"></i> Revenue Growth</h4>
-                            <p>28% increase vs. previous quarter, exceeding target by 8%</p>
+                            <p>32% increase vs. previous quarter, exceeding target by 11%</p>
                             <span class="badge badge-success">Exceeding Target</span>
                         </div>
                         
                         <div class="insight-card">
                             <h4><i class="fas fa-chart-bar"></i> Inventory Turnover</h4>
-                            <p>8.2 turns per quarter achieved, industry average is 6.5</p>
+                            <p>9.4 turns per quarter achieved, industry average is 7.2</p>
                             <span class="badge badge-success">Optimal</span>
                         </div>
                         
                         <div class="insight-card warning">
                             <h4><i class="fas fa-clock"></i> Order Cycle Time</h4>
-                            <p>24 hours - 12% improvement needed to reach target</p>
+                            <p>22.5 hours - 8% improvement needed to reach target</p>
                             <span class="badge badge-warning">Improving</span>
                         </div>
                     </div>
@@ -835,11 +987,11 @@
         <div class="container">
             <div class="footer-content">
                 <div class="creator-signature">
-                    <i class="fas fa-star"></i> Crafted by Syed Zeeshan Arshad
+                    <i class="fas fa-star"></i> E2E SCM - Enterprise Supply Chain Platform
                 </div>
-                <p>Enterprise Supply Chain Management System | Full-Stack Development | Business Intelligence</p>
-                <p style="opacity: 0.8; margin-top: 10px; font-size: 0.9em;">
-                    Transforming complex supply chains into strategic advantages
+                <p>End-to-End Supply Chain Management System | AI-Powered Analytics | Global Network Optimization</p>
+                <p style="opacity: 0.8; margin-top: 10px; font-size: 0.85em;">
+                    Transforming complex global supply chains into competitive advantages
                 </p>
             </div>
         </div>
@@ -871,8 +1023,8 @@
                     data: {
                         labels: ['Optimal', 'Needs Attention', 'Critical'],
                         datasets: [{
-                            data: [65, 25, 10],
-                            backgroundColor: ['#10b981', '#f59e0b', '#ef4444']
+                            data: [55, 27, 18],
+                            backgroundColor: ['#00a650', '#ff9500', '#e82127']
                         }]
                     },
                     options: {
@@ -893,11 +1045,11 @@
                 new Chart(revenueCtx, {
                     type: 'bar',
                     data: {
-                        labels: ['Laptop Pro', 'Smartphone X', 'Aluminum', 'Battery'],
+                        labels: ['Model S', 'Model 3', 'Model X', 'Model Y', 'Energy', 'Other'],
                         datasets: [{
-                            label: 'Revenue ($)',
-                            data: [3600, 800, 450, 360],
-                            backgroundColor: '#2563eb'
+                            label: 'Revenue ($K)',
+                            data: [980, 1250, 320, 890, 410, 150],
+                            backgroundColor: '#000000'
                         }]
                     },
                     options: {
@@ -913,10 +1065,10 @@
                 new Chart(mixCtx, {
                     type: 'pie',
                     data: {
-                        labels: ['Electronics', 'Raw Materials', 'Components'],
+                        labels: ['Electronics', 'Battery Systems', 'Components', 'Software', 'Other'],
                         datasets: [{
-                            data: [50, 30, 20],
-                            backgroundColor: ['#2563eb', '#10b981', '#f59e0b']
+                            data: [48, 32, 12, 5, 3],
+                            backgroundColor: ['#000000', '#e82127', '#5c5c5c', '#8e8e8e', '#b0b0b0']
                         }]
                     },
                     options: {
@@ -932,11 +1084,11 @@
                 new Chart(valueCtx, {
                     type: 'bar',
                     data: {
-                        labels: ['West Coast', 'Central', 'East Coast'],
+                        labels: ['North America', 'Europe', 'Asia Pacific', 'Other'],
                         datasets: [{
-                            label: 'Inventory Value ($)',
-                            data: [140000, 66000, 77500],
-                            backgroundColor: '#10b981'
+                            label: 'Inventory Value ($M)',
+                            data: [42.5, 28.3, 35.7, 8.2],
+                            backgroundColor: '#e82127'
                         }]
                     },
                     options: {
@@ -952,10 +1104,17 @@
                 new Chart(stockCtx, {
                     type: 'polarArea',
                     data: {
-                        labels: ['Laptop Pro', 'Smartphone X', 'Aluminum', 'Battery'],
+                        labels: ['Model S', 'Model 3', 'Model X', 'Model Y', 'Energy', 'Other'],
                         datasets: [{
-                            data: [80, 180, 200, 150],
-                            backgroundColor: ['#2563eb', '#10b981', '#f59e0b', '#8b5cf6']
+                            data: [42, 85, 28, 64, 35, 22],
+                            backgroundColor: [
+                                '#000000',
+                                '#e82127',
+                                '#5c5c5c',
+                                '#8e8e8e',
+                                '#b0b0b0',
+                                '#d0d0d0'
+                            ]
                         }]
                     },
                     options: {
@@ -971,12 +1130,19 @@
                 new Chart(operationsCtx, {
                     type: 'line',
                     data: {
-                        labels: ['Jan', 'Feb', 'Mar', 'Apr'],
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
                         datasets: [{
                             label: 'Order Fulfillment Rate',
-                            data: [95, 96, 98, 98],
-                            borderColor: '#10b981',
-                            tension: 0.4
+                            data: [96.5, 97.2, 98.1, 98.4, 98.7, 98.7],
+                            borderColor: '#e82127',
+                            tension: 0.4,
+                            fill: false
+                        }, {
+                            label: 'Warehouse Utilization',
+                            data: [82, 84, 85, 86, 87, 87],
+                            borderColor: '#000000',
+                            tension: 0.4,
+                            fill: false
                         }]
                     },
                     options: {
@@ -994,8 +1160,8 @@
                     data: {
                         labels: ['Low Risk', 'Medium Risk', 'High Risk'],
                         datasets: [{
-                            data: [70, 25, 5],
-                            backgroundColor: ['#10b981', '#f59e0b', '#ef4444']
+                            data: [72, 23, 5],
+                            backgroundColor: ['#00a650', '#ff9500', '#e82127']
                         }]
                     },
                     options: {
@@ -1011,17 +1177,19 @@
                 new Chart(financialCtx, {
                     type: 'line',
                     data: {
-                        labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                        labels: ['Q1 2022', 'Q2 2022', 'Q3 2022', 'Q4 2022', 'Q1 2023', 'Q2 2023'],
                         datasets: [{
-                            label: 'Revenue ($)',
-                            data: [12000, 14500, 16500, 18900],
-                            borderColor: '#2563eb',
-                            tension: 0.4
+                            label: 'Revenue ($M)',
+                            data: [1.8, 2.1, 2.4, 2.6, 2.5, 2.8],
+                            borderColor: '#000000',
+                            tension: 0.4,
+                            fill: false
                         }, {
-                            label: 'Profit ($)',
-                            data: [4800, 5800, 6600, 7560],
-                            borderColor: '#10b981',
-                            tension: 0.4
+                            label: 'Profit ($M)',
+                            data: [0.42, 0.51, 0.58, 0.62, 0.60, 0.67],
+                            borderColor: '#e82127',
+                            tension: 0.4,
+                            fill: false
                         }]
                     },
                     options: {
@@ -1037,15 +1205,15 @@
                 new Chart(kpiCtx, {
                     type: 'bar',
                     data: {
-                        labels: ['Inventory Turnover', 'Order Accuracy', 'Customer Satisfaction', 'Cost Efficiency'],
+                        labels: ['Inventory Turnover', 'Order Accuracy', 'Customer Satisfaction', 'Cost Efficiency', 'Supplier Performance'],
                         datasets: [{
                             label: 'Current',
-                            data: [8.2, 98.5, 96, 92],
-                            backgroundColor: '#2563eb'
+                            data: [9.4, 98.7, 97.3, 95.3, 96.2],
+                            backgroundColor: '#000000'
                         }, {
                             label: 'Target',
-                            data: [8.0, 99.0, 95, 95],
-                            backgroundColor: '#94a3b8'
+                            data: [8.5, 98.0, 96.0, 96.0, 95.0],
+                            backgroundColor: '#8e8e8e'
                         }]
                     },
                     options: {
